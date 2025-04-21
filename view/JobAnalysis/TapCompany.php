@@ -156,27 +156,32 @@ include("../../Config/conect.php");
                     status: $('#status').val()
                 },
                 success: function(response) {
-                    table.row.add([
-                        `<button class="btn btn-primary btn-sm edit-btn" data-code="${$('#code').val()}" data-name="${$('#name').val()}" data-status="${$('#status').val()}">
-                            <i class="fas fa-edit"></i> Edit
-                         </button>
-                         <button class="btn btn-danger btn-sm delete-btn">
-                            <i class="fas fa-trash"></i> Delete
-                         </button>`,
-                        $('#code').val(),
-                        $('#name').val(),
-                        $('#status').val()
-                    ]).draw(false);
+                    if (response.includes("Data Inserted")) { // or use a better condition based on your backend
+                        table.row.add([
+                            `<button class="btn btn-primary btn-sm edit-btn" data-code="${$('#code').val()}" data-name="${$('#name').val()}" data-status="${$('#status').val()}">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm delete-btn">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>`,
+                            $('#code').val(),
+                            $('#name').val(),
+                            $('#status').val()
+                        ]).draw(false);
 
-                    $('#addModal').modal('hide');
-                    $('.modal-backdrop').remove();
-                    $('body').removeClass('modal-open');
-                    
-                    $('#code').val('');
-                    $('#name').val('');
-                    $('#status').val('Active');
+                        $('#addModal').modal('hide');
+                        $('.modal-backdrop').remove();
+                        $('body').removeClass('modal-open');
+                        
+                        $('#code').val('');
+                        $('#name').val('');
+                        $('#status').val('Active');
 
-                    showToast('success', response);
+                        showToast('success', response); 
+                    }
+                    else{
+                        showToast('danger', response); 
+                    }
                 },
                 error: function(xhr) {
                     showToast('error', xhr.responseText || 'Error adding company');

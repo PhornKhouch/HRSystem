@@ -148,31 +148,35 @@ include("../../Config/conect.php");
                     status: $('#DeptStatus').val()
                 },
                 success: function(response) {
-                    // Add new row to DataTable
-                    table.row.add([
-                        `<button class="btn btn-primary btn-sm edit-dept-btn" data-code="${$('#DeptCode').val()}" data-name="${$('#DeptName').val()}" data-status="${$('#DeptStatus').val()}">
-                            <i class="fas fa-edit"></i> Edit
-                         </button>
-                         <button class="btn btn-danger btn-sm delete-dept-btn" data-code="${$('#DeptCode').val()}">
-                            <i class="fas fa-trash"></i> Delete
-                         </button>`,
-                        $('#DeptCode').val(),
-                        $('#DeptName').val(),
-                        $('#DeptStatus').val()
-                    ]).draw(false);
+                    if (response.includes("Data Inserted")) {
+                            table.row.add([
+                            `<button class="btn btn-primary btn-sm edit-dept-btn" data-code="${$('#DeptCode').val()}" data-name="${$('#DeptName').val()}" data-status="${$('#DeptStatus').val()}">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-sm delete-dept-btn" data-code="${$('#DeptCode').val()}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>`,
+                            $('#DeptCode').val(),
+                            $('#DeptName').val(),
+                            $('#DeptStatus').val()
+                        ]).draw(false);
 
-                    // Hide modal and clean up
-                    const modal = bootstrap.Modal.getInstance($('#addDeptModal'));
-                    modal.hide();
-                    $('.modal-backdrop').remove();
-                    $('body').removeClass('modal-open');
-                    
-                    // Clear form
-                    $('#DeptCode').val('');
-                    $('#DeptName').val('');
-                    $('#DeptStatus').val('Active');
+                        // Hide modal and clean up
+                        const modal = bootstrap.Modal.getInstance($('#addDeptModal'));
+                        modal.hide();
+                        $('.modal-backdrop').remove();
+                        $('body').removeClass('modal-open');
+                        
+                        // Clear form
+                        $('#DeptCode').val('');
+                        $('#DeptName').val('');
+                        $('#DeptStatus').val('Active');
 
-                    showToast('success', response);
+                        showToast('success', response);
+                    }
+                    else{
+                        showToast('danger', response); 
+                    }
                 },
                 error: function(xhr) {
                     showToast('error', xhr.responseText || 'Error adding company');

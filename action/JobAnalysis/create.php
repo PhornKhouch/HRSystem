@@ -8,14 +8,10 @@ if($_POST['type']=="Company")
     $name=$_POST['name'];
     $status=$_POST['status'];
     $sql="INSERT INTO hrcompany values('$code','$name','$status')";
-    $result=$con->query($sql);
-    if($result)
-    {
+    if ($con->query($sql) === TRUE) {
         echo "Data Inserted";
-    }
-    else
-    {
-        echo "Data Not Inserted";
+    } else {
+        echo "Error: " . $con->error;
     }
 }
 else if($_POST['type']=="Department")
@@ -24,14 +20,10 @@ else if($_POST['type']=="Department")
     $name=$_POST['name'];
     $status=$_POST['status'];
     $sql="INSERT INTO hrdepartment values('$code','$name','$status')";
-    $result=$con->query($sql);
-    if($result)
-    {
+    if ($con->query($sql) === TRUE) {
         echo "Data Inserted";
-    }
-    else
-    {
-        echo "Data Not Inserted";
+    } else {
+        echo "Error: " . $con->error;
     }
 }
 else if($_POST['type']=="Division")
@@ -40,14 +32,10 @@ else if($_POST['type']=="Division")
     $name=$_POST['name'];
     $status=$_POST['status'];
     $sql="INSERT INTO hrdivision values('$code','$name','$status')";
-    $result=$con->query($sql);
-    if($result)
-    {
+    if ($con->query($sql) === TRUE) {
         echo "Data Inserted";
-    }
-    else
-    {
-        echo "Data Not Inserted";
+    } else {
+        echo "Error: " . $con->error;
     }
 }
 else if($_POST['type']=="Level")
@@ -56,14 +44,10 @@ else if($_POST['type']=="Level")
     $name=$_POST['name'];
     $status=$_POST['status'];
     $sql="INSERT INTO hrlevel values('$code','$name','$status')";
-    $result=$con->query($sql);
-    if($result)
-    {
+    if ($con->query($sql) === TRUE) {
         echo "Data Inserted";
-    }
-    else
-    {
-        echo "Data Not Inserted";
+    } else {
+        echo "Error: " . $con->error;
     }
 }
 else if($_POST['type']=="Position")
@@ -72,14 +56,10 @@ else if($_POST['type']=="Position")
     $name=$_POST['name'];
     $status=$_POST['status'];
     $sql="INSERT INTO hrposition values('$code','$name','$status')";
-    $result=$con->query($sql);
-    if($result)
-    {
-        echo "Data Inserted Successfully";
-    }
-    else
-    {
-        echo "Data Not Inserted";
+    if ($con->query($sql) === TRUE) {
+        echo "Data Inserted";
+    } else {
+        echo "Error: " . $con->error;
     }
 }
 ?>
