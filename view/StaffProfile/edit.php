@@ -332,7 +332,7 @@ try {
                                         while($row = $result->fetch_assoc()) 
                                         {
                                             ?>
-                                                 <option value="<?php echo $row['empcode']; ?>" <?php echo $staffData['HOD'] == $row['empcode'] ? 'selected' : ''; ?>><?php echo $row['empname']; ?></option>
+                                                 <option value="<?php echo $row['empcode']; ?>" <?php echo $staffData['Hod'] == $row['empcode'] ? 'selected' : ''; ?>><?php echo $row['empname']; ?></option>
                                             <?php
                                         }
                                     }

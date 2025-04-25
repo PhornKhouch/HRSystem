@@ -6,188 +6,44 @@
 <!-- DataTables CSS -->
 <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
-
 <!-- Add SweetAlert2 -->
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
-
-<style>
-/* Table Styling */
-.table {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 100%;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.table thead th {
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #dee2e6;
-    color: #495057;
-    font-weight: 600;
-    padding: 12px;
-    text-align: left;
-    white-space: nowrap;
-}
-
-.table tbody td {
-    padding: 12px;
-    vertical-align: middle;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.table tbody tr:hover {
-    background-color: #f8f9fa;
-}
-
-/* DataTables Specific */
-.dataTables_wrapper .dataTables_length select {
-    padding: 4px 24px 4px 8px;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    background-color: #fff;
-}
-
-.dataTables_wrapper .dataTables_filter input {
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    padding: 6px 12px;
-    margin-left: 8px;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    padding: 6px 12px;
-    margin-left: 4px;
-    border-radius: 4px;
-    border: 1px solid #dee2e6;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: #0d6efd;
-    border-color: #0d6efd;
-    color: white !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #e9ecef;
-    border-color: #dee2e6;
-    color: #0d6efd !important;
-}
-
-/* Button Styling */
-.btn-success {
-    background-color: #198754;
-    border-color: #198754;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-}
-
-.btn-success:hover {
-    background-color: #157347;
-    border-color: #146c43;
-}
-
-/* Card Styling */
-.card {
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,.05);
-    margin-bottom: 24px;
-}
-
-.card-body {
-    padding: 24px;
-}
-
-/* Action Buttons */
-.btn-sm {
-    padding: 4px 8px;
-    font-size: 0.875rem;
-    border-radius: 4px;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-}
-
-.btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
-
-/* Profile Image */
-.profile-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* Status Badge */
-.badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-weight: 500;
-}
-
-.badge-active {
-    background-color: #198754;
-    color: white;
-}
-
-.badge-inactive {
-    background-color: #dc3545;
-    color: white;
-}
-
-/* Container Spacing */
-.container-fluid {
-    padding: 24px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container-fluid {
-        padding: 16px;
-    }
-    
-    .card-body {
-        padding: 16px;
-    }
-    
-    .table thead th {
-        padding: 8px;
-    }
-    
-    .table tbody td {
-        padding: 8px;
-    }
-}
-</style>
+<link href="../../Style/leave.css" rel="stylesheet">
 
 <div class="container-fluid mt-3">
     <div class="card">
+        <div class="card-header">
+            <h5 class="card-header-title">
+                <i class="fas fa-calendar-check"></i>
+                Leave Balance Management
+            </h5>
+        </div>  
         <div class="card-body">
-            <div class="d-flex justify-content-start mb-3">
-                <a href="create.php" class="btn btn-success me-2">
-                    <i class="fas fa-plus"></i> Add New Leave Balance
-                </a>
+            <div class="action-bar">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="custom-select-wrapper">
+                        <select id="entitleYear" class="form-select custom-select">
+                            <?php 
+                                $currentYear = date("Y");
+                                for ($year = $currentYear - 2; $year <= $currentYear + 1; $year++) {
+                                    echo '<option value="' . $year . '" ' . ($year === $currentYear ? 'selected' : '') . '>' . $year . '</option>';
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <button id="generateEntitle" class="generate-btn">
+                        <i class="fas fa-sync"></i>
+                        <span>Generate Leave Entitle</span>
+                    </button>
+                </div>
             </div>
             <table class="table table-bordered" id="LeaveTable">
                 <thead>
                     <tr>
-                        <th>Actions</th>
                         <th>EmpCode</th>
                         <th>Leave Type</th>
                         <th>Balance</th>
-                        <th>Enitile</th>
+                        <th>Entitle</th>
                         <th>Current Balance</th>
                         <th>Taken</th>
                     </tr>
@@ -209,4 +65,134 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
 <script>
+$(document).ready(function() {
+    // Initialize DataTable
+    var leaveTable = $('#LeaveTable').DataTable({
+        responsive: true,
+        processing: true,
+        serverSide: true, // Changed to true to enable server-side processing
+        pageLength: 25, // This is already set but making sure it's here
+        ajax: {
+            url: '../../action/LeaveBalance/fetch.php',
+            type: 'POST',
+            dataSrc: function(json) {
+                if (json.error) {
+                    console.error('Server Error:', json.error);
+                    return [];
+                }
+                return json.data || [];
+            },
+            error: function (xhr, error, thrown) {
+                console.error('DataTables error:', error);
+                console.error('Server response:', xhr.responseText);
+                Swal.fire(
+                    'Error!',
+                    'Failed to load leave balance data. Please try refreshing the page.',
+                    'error'
+                );
+            }
+        },
+        columns: [
+            { data: 'emp_code' },
+            { data: 'leave_type' },
+            { 
+                data: 'balance',
+                render: function(data) {
+                    return data ? parseFloat(data).toFixed(1) : '0.0';
+                }
+            },
+            { 
+                data: 'entitle',
+                render: function(data) {
+                    return data ? parseFloat(data).toFixed(1) : '0.0';
+                }
+            },
+            { 
+                data: 'current_balance',
+                render: function(data) {
+                    return data ? parseFloat(data).toFixed(1) : '0.0';
+                }
+            },
+            { 
+                data: 'taken',
+                render: function(data) {
+                    return data ? parseFloat(data).toFixed(1) : '0.0';
+                }
+            }
+        ],
+        order: [[1, 'asc']], // Sort by EmpCode by default
+        language: {
+            processing: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>',
+            emptyTable: 'No leave balance records found',
+            zeroRecords: 'No matching records found'
+        },
+        initComplete: function() {
+            console.log('DataTable initialization complete');
+        }
+    });
+
+    // Handle Generate Leave Entitle button click
+    $('#generateEntitle').on('click', function() {
+        const year = $('#entitleYear').val();
+        
+        Swal.fire({
+            title: 'Generate Leave Entitlements',
+            text: `Are you sure you want to generate leave entitlements for year ${year}?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, generate',
+            cancelButtonText: 'No, cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Generating...',
+                    text: 'Please wait while generating leave entitlements',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Send AJAX request
+                $.ajax({
+                    url: '../../action/LeaveBalance/generate_entitle.php',
+                    type: 'POST',
+                    data: { year: year },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: response.message,
+                                icon: 'success'
+                            }).then(() => {
+                                // Refresh the DataTable
+                                leaveTable.ajax.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: response.message,
+                                icon: 'error'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        console.error('Server response:', xhr.responseText);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Failed to generate leave entitlements. Please try again.',
+                            icon: 'error'
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+});
 </script>

@@ -188,7 +188,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="workDay" class="form-label">Work Days</label>
-                                <input type="number" class="form-control" id="workDay" name="work_day" min="0" max="168" step="0.5" value="<?php echo htmlspecialchars($policy['workday']); ?>">
+                                <input type="number" class="form-control" id="workDay" name="work_day" min="0"  value="<?php echo htmlspecialchars($policy['workday']); ?>">
                             </div>
                         </div>
                     </div>
