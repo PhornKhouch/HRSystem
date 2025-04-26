@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 25, 2025 at 03:12 PM
+-- Generation Time: Apr 26, 2025 at 03:04 PM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -40,6 +40,41 @@ CREATE TABLE IF NOT EXISTS `approvesalary` (
   `Status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `careerhistory`
+--
+
+DROP TABLE IF EXISTS `careerhistory`;
+CREATE TABLE IF NOT EXISTS `careerhistory` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `CareerHistoryType` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `EmployeeID` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Company` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Division` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `PositionTitle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Department` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `StartDate` date NOT NULL,
+  `EndDate` date DEFAULT NULL,
+  `Remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `Increase` decimal(18,2) DEFAULT NULL,
+  `CreatedAt` datetime DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ID`),
+  KEY `EmployeeID` (`EmployeeID`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `careerhistory`
+--
+
+INSERT INTO `careerhistory` (`ID`, `CareerHistoryType`, `EmployeeID`, `Company`, `Division`, `PositionTitle`, `Department`, `StartDate`, `EndDate`, `Remark`, `Increase`, `CreatedAt`, `UpdatedAt`) VALUES
+(7, 'NEW', 'A02', '', '', 'P01', 'HR', '2025-04-11', NULL, NULL, NULL, '2025-04-26 16:54:06', '2025-04-26 16:54:06'),
+(10, 'INCREASE', 'A02', '', '', 'P01', 'HR', '2025-05-01', NULL, NULL, 20.00, '2025-04-26 21:18:40', '2025-04-26 21:18:40'),
+(12, 'NEW', 'A01', '', '', 'P01', 'HR', '2025-04-01', NULL, NULL, NULL, '2025-04-26 21:22:04', '2025-04-26 21:22:04'),
+(13, 'INCREASE', 'A01', '', '', 'Full Stack Developer', 'Human resource', '2025-05-15', NULL, NULL, 23.00, '2025-04-26 21:24:04', '2025-04-26 21:53:15');
 
 -- --------------------------------------------------------
 
@@ -174,13 +209,6 @@ CREATE TABLE IF NOT EXISTS `hrfamily` (
   PRIMARY KEY (`EmpCode`,`RelationName`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `hrfamily`
---
-
-INSERT INTO `hrfamily` (`EmpCode`, `RelationName`, `RelationType`, `Gender`, `IsTax`) VALUES
-('A01', 'kimheng', 'Spouse', 'Male', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -281,11 +309,8 @@ CREATE TABLE IF NOT EXISTS `hrstaffprofile` (
 --
 
 INSERT INTO `hrstaffprofile` (`EmpCode`, `EmpName`, `Gender`, `Dob`, `Position`, `Department`, `Company`, `Level`, `Division`, `StartDate`, `Status`, `Contact`, `Email`, `Address`, `LineManager`, `Hod`, `Photo`, `Salary`, `PayParameter`, `Telegram`) VALUES
-('A01', 'Phorn Khouch', 'Male', '2025-04-07', 'P02', 'IT', NULL, NULL, 'D01', '2025-04-24', 'Active', '', '', '', 'A01', '', 'Uploads/staff_photos/A01_1745075390.jpg', 123400.00, '', ''),
-('A02', 'AAA', 'Female', '2025-04-08', 'P01', 'HR', 'CB', NULL, 'D01', '2025-04-13', 'Active', '', '', '', 'A01', '', 'Uploads/staff_photos/A02_1745076403.jpg', 2234.00, '', ''),
-('A03', 'Sok kimheng', 'Male', '2025-04-15', 'P02', 'HR', 'CB', NULL, 'D01', '2025-04-09', 'Active', '', '', '', 'A01', 'A01', 'Uploads/staff_photos/A03_1745588400.png', 400.00, NULL, ''),
-('A04', 'Sok Raksa', 'Female', '2025-05-02', 'P01', 'HR', 'CB', NULL, 'D01', '2025-04-09', 'Active', '', '', '', 'A02', 'A02', 'Uploads/staff_photos/A04_1745588831.png', 234.00, NULL, ''),
-('A05', 'Mom Veansa', 'Male', '2025-04-02', 'P05', 'HR', 'CB', NULL, 'D01', '2025-04-25', 'Active', '', '', '', 'A03', 'A01', 'Uploads/staff_photos/A05_1745591350.png', 234.00, NULL, '');
+('A01', 'Sok Kimheng', 'Male', '2025-04-11', 'P01', 'HR', 'CB', NULL, 'D01', '2025-04-01', 'Active', '', '', '', 'A02', 'A02', 'Uploads/staff_photos/A01_1745677324.png', 123.00, NULL, ''),
+('A02', 'Phorn Khouch', 'Male', '2025-04-17', 'P01', 'HR', 'CB', NULL, 'D01', '2025-04-11', 'Active', '', '', '', '', '', 'Uploads/staff_photos/A02_1745661246.png', 400.00, '', '');
 
 -- --------------------------------------------------------
 

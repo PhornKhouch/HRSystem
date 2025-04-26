@@ -141,6 +141,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt->close();
 
+        //insert into career history
+        $CareerHistoryType = "NEW";
+        $employeeID = $empCode;
+        $positionTitle = $position;
+        $department = $department;
+        $startDate = $startDate;
+        $endDate = null;
+        $remark = null;
+        $increase = null;
+
+        $stmt = $con->prepare("INSERT INTO careerhistory (
+            CareerHistoryType, EmployeeID, PositionTitle, Department,
+            StartDate, EndDate, Remark, Increase,
+            CreatedAt, UpdatedAt
+        ) VALUES (
+            ?, ?, ?, ?,
+            ?, ?, ?, ?,
+            CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+        )");
+        if (!$stmt) {
+            throw new Exception('Database error: ' . $con->error);
+        }
+
+        $stmt->bind_param("sssssssd",
+            $CareerHistoryType, $employeeID, $positionTitle, $department,
+            $startDate, $endDate, $remark, $increase
+        );
+
+        if (!$stmt->execute()) {
+            throw new Exception('Error creating career history: ' . $stmt->error);
+        }
+
+        $stmt->close();
+
         // Handle family members
         if (isset($_POST['familyMembers'])) {
             $familyMembers = json_decode($_POST['familyMembers'], true);

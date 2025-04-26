@@ -58,7 +58,7 @@
                         <a href="../view/StaffProfile/index.php" target="content">Staff Profile</a>
                     </li>
                     <li>
-                        <a href="../Cart/index.php" target="content">Career History</a>
+                        <a href="../view/CareerHistory/index.php" target="content">Career History</a>
                     </li>
                 </ul>
             </li>
