@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
         // Start transaction
         $con->begin_transaction();
         
+
+        
         // Get photo and document paths before deleting
         $stmt = $con->prepare("SELECT Photo FROM hrstaffprofile WHERE EmpCode = ?");
         if (!$stmt) {

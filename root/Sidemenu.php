@@ -43,7 +43,7 @@
                         <a href="../view/Menu/index.php" target="content">General Settings</a>
                     </li>
                     <li>
-                        <a href="../view/Menu/index.php" target="content">Telegram config</a>
+                        <a href="../view/TelegramConfig/index.php" target="content">Telegram config</a>
                     </li>
                 </ul>
             </li>
