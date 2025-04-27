@@ -6,181 +6,272 @@
 <!-- DataTables CSS -->
 <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
+<link href="../../style/career.css" rel="stylesheet">
 
 <!-- Add SweetAlert2 -->
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
-
 <style>
-/* Table Styling */
+/* Enhanced Table Styling */
 .table {
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    overflow: hidden;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border: none;
 }
 
 .table thead th {
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #dee2e6;
+    background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%);
     color: #495057;
     font-weight: 600;
-    padding: 12px;
-    text-align: left;
-    white-space: nowrap;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 1rem;
+    vertical-align: middle;
+    border: none;
+    letter-spacing: 0.5px;
 }
 
 .table tbody td {
-    padding: 12px;
+    padding: 1rem;
     vertical-align: middle;
-    border-bottom: 1px solid #dee2e6;
+    border-top: 1px solid #dee2e6;
+    color: #333;
+    font-size: 0.9rem;
 }
 
-.table tbody tr:last-child td {
-    border-bottom: none;
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
 }
 
-.table tbody tr:hover {
-    background-color: #f8f9fa;
-}
-
-/* DataTables Specific */
-.dataTables_wrapper .dataTables_length select {
-    padding: 4px 24px 4px 8px;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    background-color: #fff;
-}
-
-.dataTables_wrapper .dataTables_filter input {
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    padding: 6px 12px;
-    margin-left: 8px;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    padding: 6px 12px;
-    margin-left: 4px;
-    border-radius: 4px;
-    border: 1px solid #dee2e6;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: #0d6efd;
-    border-color: #0d6efd;
-    color: white !important;
-}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #e9ecef;
-    border-color: #dee2e6;
-    color: #0d6efd !important;
-}
-
-/* Button Styling */
-.btn-success {
-    background-color: #198754;
-    border-color: #198754;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-}
-
-.btn-success:hover {
-    background-color: #157347;
-    border-color: #146c43;
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.03);
+    transition: all 0.2s ease;
 }
 
 /* Card Styling */
 .card {
+    background: #fff;
     border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,.05);
-    margin-bottom: 24px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,.08);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0 30px rgba(0,0,0,.12);
 }
 
 .card-body {
-    padding: 24px;
+    padding: 2rem;
 }
 
-/* Action Buttons */
+/* Button Styling */
+.btn {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 0.6rem 1.2rem;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #28a745 0%, #20c997 100%);
+    border: none;
+    box-shadow: 0 2px 6px rgba(40, 167, 69, 0.2);
+}
+
+.btn-success:hover {
+    background: linear-gradient(45deg, #218838 0%, #1ba87e 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
 .btn-sm {
-    padding: 4px 8px;
-    font-size: 0.875rem;
-    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.785rem;
 }
 
 .btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
+    background: linear-gradient(45deg, #6c757d 0%, #5a6268 100%);
+    border: none;
+    box-shadow: 0 2px 6px rgba(108, 117, 125, 0.2);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(45deg, #5a6268 0%, #4e555b 100%);
+    transform: translateY(-1px);
 }
 
 .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
+    background: linear-gradient(45deg, #dc3545 0%, #c82333 100%);
+    border: none;
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.2);
 }
 
-/* Profile Image */
+.btn-danger:hover {
+    background: linear-gradient(45deg, #c82333 0%, #bd2130 100%);
+    transform: translateY(-1px);
+}
+
+/* DataTables Enhancement */
+.dataTables_wrapper .dataTables_length select {
+    padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0.5rem 0.75rem;
+    margin: 0 0.2rem;
+    border-radius: 0.25rem;
+    border: none;
+    background: #f8f9fa;
+    color: #007bff !important;
+    transition: all 0.2s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: linear-gradient(45deg, #007bff 0%, #0056b3 100%);
+    border: none;
+    color: #fff !important;
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: linear-gradient(45deg, #0056b3 0%, #004085 100%);
+    border: none;
+    color: #fff !important;
+    transform: translateY(-1px);
+}
+
+/* Profile Image Enhancement */
 .profile-img {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.1);
+    transition: all 0.2s ease;
 }
 
-/* Status Badge */
+.profile-img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+
+/* Status Badge Enhancement */
 .badge {
-    padding: 6px 12px;
-    border-radius: 20px;
+    padding: 0.5em 1em;
+    font-size: 0.75em;
     font-weight: 500;
+    letter-spacing: 0.5px;
+    border-radius: 30px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0,0,0,.05);
 }
 
 .badge-active {
-    background-color: #198754;
+    background: linear-gradient(45deg, #28a745 0%, #20c997 100%);
     color: white;
 }
 
 .badge-inactive {
-    background-color: #dc3545;
+    background: linear-gradient(45deg, #dc3545 0%, #c82333 100%);
     color: white;
 }
 
-/* Container Spacing */
-.container-fluid {
-    padding: 24px;
-}
-
-/* Responsive Design */
+/* Responsive Enhancement */
 @media (max-width: 768px) {
-    .container-fluid {
-        padding: 16px;
-    }
-    
     .card-body {
-        padding: 16px;
+        padding: 1.5rem;
     }
     
     .table thead th {
-        padding: 8px;
+        padding: 0.75rem;
+        font-size: 0.8rem;
     }
     
     .table tbody td {
-        padding: 8px;
+        padding: 0.75rem;
+        font-size: 0.85rem;
     }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+}
+
+.dropdown-menu {
+    min-width: 120px;
+}
+.dropdown-item {
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.dropdown-item i {
+    width: 16px;
+}
+.export-dropdown .btn {
+    padding: 6px 8px;
+}
+.vertical-dots {
+    font-size: 20px;
+    line-height: 0;
 }
 </style>
 
 <div class="container-fluid mt-3">
     <div class="card">
         <div class="card-body">
-            <div class="d-flex justify-content-start mb-3">
-                <a href="create.php" class="btn btn-success me-2">
-                    <i class="fas fa-plus"></i> Add New Staff
-                </a>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <a href="create.php" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Add New Staff
+                    </a>
+                </div>
+                <div class="export-dropdown">
+                    <div class="dropdown">
+                        <button class="btn btn-light border" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v vertical-dots"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="../../action/StaffProfile/export_excel.php">
+                                    <i class="far fa-file-excel text-success"></i>
+                                    Export Excel
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="../../action/StaffProfile/export_pdf.php">
+                                    <i class="far fa-file-pdf text-danger"></i>
+                                    Export PDF
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <table class="table table-bordered" id="staffTable">
+            <table class="table table-striped" id="staffTable">
                 <thead>
                     <tr>
                         <th>Actions</th>
@@ -197,7 +288,19 @@
                 </thead>
                 <tbody>
                     <?php
-                    $sql = "SELECT * FROM hrstaffprofile ORDER BY EmpCode DESC";
+                    $sql = "SELECT hrstaffprofile.*, 
+                    hrcompany.Description as CompanyName,
+                    hrdepartment.Description as DepartmentName,
+                    hrdivision.Description as DivisionName,
+                    hrposition.Description as PositionName,
+                    hrlevel.Description as LevelName 
+                    FROM hrstaffprofile
+                    LEFT JOIN hrcompany ON hrstaffprofile.Company = hrcompany.Code
+                    LEFT JOIN hrdepartment ON hrstaffprofile.Department = hrdepartment.Code
+                    LEFT JOIN hrdivision ON hrstaffprofile.Division = hrdivision.Code
+                    LEFT JOIN hrposition ON hrstaffprofile.Position = hrposition.Code
+                    LEFT JOIN hrlevel ON hrstaffprofile.Level = hrlevel.Code
+                    ORDER BY EmpCode DESC";
                     $result = $con->query($sql);
                     
                     if ($result && $result->num_rows > 0) {
@@ -211,9 +314,9 @@
                             echo "<td><center><img src='" . htmlspecialchars($photoPath) . "' class='profile-img' alt='Profile'></center></td>";
                             echo "<td>" . htmlspecialchars($row['EmpCode']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['EmpName']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['Position']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['Department']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['Division']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['PositionName']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['DepartmentName']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['DivisionName']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['StartDate']) . "</td>";
                             echo "<td><span class='badge " . ($row['Status'] == 'Active' ? 'badge-active' : 'badge-inactive') . "'>" 
                                 . htmlspecialchars($row['Status']) . "</span></td>";
@@ -236,6 +339,9 @@
 
 <!-- Add SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 $(document).ready(function() {

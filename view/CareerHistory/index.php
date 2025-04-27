@@ -25,6 +25,21 @@ $result = $con->query($sql);
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Career History CSS -->
     <link href="../../style/career.css" rel="stylesheet">
+
+    <style>
+    .dropdown-menu {
+        min-width: 120px;
+    }
+    .dropdown-item {
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .dropdown-item i {
+        width: 16px;
+    }
+    </style>
 </head>
 <body>
     <div class="container-fluid mt-4 mb-4">
@@ -34,9 +49,31 @@ $result = $con->query($sql);
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="mb-0">Career History List</h4>
-                            <a href="create.php" class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>Create New
-                            </a>
+                            <div class="d-flex gap-2">
+                                <a href="create.php" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Create New
+                                </a>
+                                <!-- export -->
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Export
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item" href="../../action/CareerHistory/export_excel.php">
+                                                <i class="far fa-file-excel text-success"></i>
+                                                Export Excel
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="../../action/CareerHistory/export_pdf.php">
+                                                <i class="far fa-file-pdf text-danger"></i>
+                                                Export PDF
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">

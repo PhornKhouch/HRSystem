@@ -26,8 +26,8 @@ if ($year < ($currentYear - 2) || $year > ($currentYear + 1)) {
 }
 
 try {
-    // Get all active staff
-    $staffQuery = "SELECT EmpCode, Gender FROM hrstaffprofile WHERE Status = 'Active'";
+    // Get all active staff with their join date
+    $staffQuery = "SELECT EmpCode, Gender, startDate FROM hrstaffprofile WHERE Status = 'Active'";
     $staffResult = mysqli_query($con, $staffQuery);
 
     if (!$staffResult) {
@@ -35,7 +35,7 @@ try {
     }
 
     // Get leave types
-    $leaveTypesQuery = "SELECT Code as LeaveType, LeaveType as leave_type_name,  default_balance 
+    $leaveTypesQuery = "SELECT Code as LeaveType, LeaveType as leave_type_name, default_balance 
                         FROM lmleavetype";
     $leaveTypesResult = mysqli_query($con, $leaveTypesQuery);
 
@@ -68,7 +68,7 @@ try {
             if ($leaveType['LeaveType'] != 'UL') {
                 // Check if leave balance already exists for this combination
                 $checkQuery = "SELECT id FROM lmleavebalance 
-            WHERE EmpCode = ? AND LeaveType = ? AND inyear = ?";
+                             WHERE EmpCode = ? AND LeaveType = ? AND inyear = ?";
                 $stmt = mysqli_prepare($con, $checkQuery);
 
                 if (!$stmt) {
@@ -79,23 +79,60 @@ try {
                 mysqli_stmt_execute($stmt);
                 $existingResult = mysqli_stmt_get_result($stmt);
 
-                if (mysqli_num_rows($existingResult) == 0) {
+                if (mysqli_num_rows($existingResult) == 0)  {
+                    $created_at = "$year-01-01 00:00:00";
+                    $taken = 0;
+
+                    if ($leaveType['LeaveType'] == 'AL') {
+                        // Calculate prorated leave balance for AL only
+                        $joinDate = new DateTime($staff['startDate']);
+                        $yearStart = new DateTime("$year-01-01");
+                        $yearEnd = new DateTime("$year-12-31");
+                        $currentDate = new DateTime(); // Get current date
+                        
+                        // Use the later date between join date and year start
+                        $startDate = $joinDate > $yearStart ? $joinDate : $yearStart;
+                        
+                        // Calculate full year entitlement
+                        $totalMonths = ($yearEnd->format('Y') - $startDate->format('Y')) * 12;
+                        $totalMonths += $yearEnd->format('n') - $startDate->format('n');
+                        $totalMonths += 1; // Include both start and end month
+                        
+                        // Calculate prorated balance for full year (1.5 days per month)
+                        $proratedBalance = $totalMonths * 1.5;
+                        
+                        // Cap at default balance
+                        $balance = min($proratedBalance, $leaveType['default_balance']);
+                        
+                        // Calculate current entitlement up to current date
+                        $endDate = $currentDate < $yearEnd ? $currentDate : $yearEnd;
+                        $currentMonths = ($endDate->format('Y') - $startDate->format('Y')) * 12;
+                        $currentMonths += $endDate->format('n') - $startDate->format('n');
+                        $currentMonths += 1; // Include both start and end month
+                        
+                        // Calculate current balance (1.5 days per month)
+                        $currentProratedBalance = $currentMonths * 1.5;
+                        
+                        // Cap current balance at the calculated full year balance
+                        $currentBalance = min($currentProratedBalance, $balance);
+                    } else {
+                        // For non-AL leave types, use default balance without proration
+                        $balance = $leaveType['default_balance'];
+                        $currentBalance = $balance;
+                    }
+
+                    $entitle = $balance; // Set entitle to full year calculated balance
+                    
                     // Insert new leave balance
                     $insertQuery = "INSERT INTO lmleavebalance 
-                 (EmpCode, LeaveType, Balance, Entitle, CurrentBalance, Taken, 
-                  created_at, inyear) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                                 (EmpCode, LeaveType, Balance, Entitle, CurrentBalance, Taken, 
+                                  created_at, inyear) 
+                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt = mysqli_prepare($con, $insertQuery);
 
                     if (!$stmt) {
                         throw new Exception("Error preparing insert query: " . mysqli_error($con));
                     }
-
-                    $created_at = "$year-01-01 00:00:00";
-                    $taken = 0;
-                    $balance = $leaveType['default_balance'];
-                    $entitle = $leaveType['default_balance'];
-                    $currentBalance = 0;
 
                     mysqli_stmt_bind_param(
                         $stmt,

@@ -16,6 +16,7 @@ if (!isset($_SESSION['csrf_token'])) {
 
 <!-- Add custom CSS -->
 <link href="../../Style/staffprofile.css" rel="stylesheet">
+<link href="../../style/career.css" rel="stylesheet">
 
 <div class="container-fluid mt-3">
     <div class="card">

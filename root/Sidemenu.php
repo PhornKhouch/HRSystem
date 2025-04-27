@@ -88,10 +88,10 @@
                         <a href="../view/LeaveBalance/index.php" target="content">Leave Balance</a>
                     </li>
                     <li>
-                        <a href="../Cart/index.php" target="content">Leave Request</a>
+                        <a href="../view/LeaveRequest/index.php" target="content">Leave Request</a>
                     </li>
                     <li>
-                        <a href="../Cart/index.php" target="content">Leave Approval</a>
+                        <a href="../view/LeaveApproval/index.php" target="content">Leave Approval</a>
                     </li>
                 </ul>
             </li>
