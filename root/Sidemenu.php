@@ -43,7 +43,7 @@
                         <a href="../view/Menu/index.php" target="content">General Settings</a>
                     </li>
                     <li>
-                        <a href="../view/TelegramConfig/index.php" target="content">Telegram config</a>
+                        <a href="../view/Telegramconfig/index.php" target="content">Telegram config</a>
                     </li>
                 </ul>
             </li>
@@ -70,10 +70,10 @@
                 </a>
                 <ul class="collapse list-unstyled" id="ESS">
                     <li>
-                        <a href="Customer/index.php" target="content">Sale Product</a>
+                        <a href="../view/SSLeaveRequest/index.php" target="content">Self Request Leave</a>
                     </li>
                     <li>
-                        <a href="Customer/index.php" target="content">Stock Product</a>
+                        <a href="../view/SSLeaveApproval/index.php" target="content">Leave Approval</a>
                     </li>
                 </ul>
             </li>

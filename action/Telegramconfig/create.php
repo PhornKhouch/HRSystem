@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $chat_id = $_POST['chat_id'];
     $status = $_POST['status'];
 
-    $stmt = $con->prepare("INSERT INTO telegram_config (id, token, chat_id, status) VALUES (?, ?, ?, ?)");
+    $stmt = $con->prepare("INSERT INTO sytelegram_config (id, token, chat_id, status) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssi", $token, $chat_id, $status);
 
     if ($stmt->execute()) {

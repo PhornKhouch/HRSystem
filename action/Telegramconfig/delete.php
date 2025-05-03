@@ -4,7 +4,7 @@ include("../../Config/conect.php");
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $id = $_POST['id'];
 
-    $stmt = $con->prepare("DELETE FROM telegram_config WHERE id = ?");
+    $stmt = $con->prepare("DELETE FROM sytelegram_config WHERE id = ?");
     $stmt->bind_param("i", $id);
 
     if ($stmt->execute()) {

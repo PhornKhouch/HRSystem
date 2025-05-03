@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $department = trim($_POST['department']);
         $division = isset($_POST['division']) ? trim($_POST['division']) : null;
         $startDate = trim($_POST['startDate']);
+        $isProb = isset($_POST['isProb']) ? (int)$_POST['isProb'] : 0;
         $status = trim($_POST['status']);
         $salary = trim($_POST['salary']);
         $lineManager = isset($_POST['lineManager']) ? trim($_POST['lineManager']) : null;
@@ -114,25 +115,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $checkStmt->close();
 
         // Insert staff profile
-        $sql = "INSERT INTO hrstaffprofile (
-            EmpCode, EmpName, Gender, Dob, Position, Department, Division, 
-            StartDate, Status, LineManager, Hod, Contact, Email, Address, Photo, Salary,
-            Telegram, PayParameter, Company
+        $stmt = $con->prepare("INSERT INTO hrstaffprofile (
+            EmpCode, EmpName, Gender, DOB, Position, Department, Division,
+            StartDate, IsProb, Status, Salary, LineManager,
+            HOD, Contact, Email, Address, Telegram, PayParameter, Photo, Company
         ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?
-        )";
+            ?, ?, ?, ?, ?, ?, ?, 
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?, ?, ?
+        )");
 
-        $stmt = $con->prepare($sql);
         if (!$stmt) {
             throw new Exception('Database error: ' . $con->error);
         }
 
-        $stmt->bind_param("sssssssssssssssdsss",
+        $stmt->bind_param("ssssssssisidssssssss",
             $empCode, $empName, $gender, $dob, $position, $department, $division,
-            $startDate, $status, $lineManager, $hod, $contact, $email, $address, $photoPath, $salary,
-            $telegram, $payParameter, $company
+            $startDate, $isProb, $status, $salary, $lineManager,
+            $hod, $contact, $email, $address, $telegram, $payParameter, $photoPath, $company
         );
 
         if (!$stmt->execute()) {

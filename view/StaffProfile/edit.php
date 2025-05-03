@@ -295,12 +295,26 @@ try {
 
                         <div class="row mb-3">
                             <div class="col-md-4">
+                                <label for="probationDate" class="form-label">Probation End Date</label>
+                                <input type="date" class="form-control" id="probationDate" name="probationDate" value="<?php echo htmlspecialchars($staffData['ProbationDate']); ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="isProb" class="form-label">Probation Status</label>
+                                <select class="form-select" id="isProb" name="isProb">
+                                    <option value="1" <?php echo $staffData['IsProb'] == 1 ? 'selected' : ''; ?>>In Probation</option>
+                                    <option value="0" <?php echo $staffData['IsProb'] == 0 ? 'selected' : ''; ?>>Passed Probation</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
                                 <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status">
                                     <option value="Active" <?php echo $staffData['Status'] == 'Active' ? 'selected' : ''; ?>>Active</option>
                                     <option value="Inactive" <?php echo $staffData['Status'] == 'Inactive' ? 'selected' : ''; ?>>Inactive</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <div class="col-md-4">
                                 <label for="lineManager" class="form-label">Line Manager</label>
                                 <select name="lineManager" id="lineManager" class="form-select">
@@ -339,13 +353,13 @@ try {
                                     ?>
                                 </select>
                             </div>
-                        </div>
-
-                        <div class="row mb-3">
                             <div class="col-md-4">
                                 <label for="telegram" class="form-label">Telegram</label>
                                 <input type="text" class="form-control" id="telegram" name="telegram" value="<?php echo htmlspecialchars($staffData['Telegram']); ?>">
                             </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <div class="col-md-4">
                                 <label for="payParamter" class="form-label">Pay Parameter</label>
                                 <select name="payParamter" id="payParamter" class="form-control">

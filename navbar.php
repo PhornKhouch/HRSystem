@@ -101,20 +101,146 @@ include("root/header.php");
                         <option value="en">English</option>
                         <option value="KH">Khmer</option>
                     </select>
-                    <!-- Admin Icon -->
-                    <a href="#" class="icon-button">
-                        <i class="fas fa-user-circle fa-lg"></i>
-                    </a>
+                    <!-- User Icon -->
+                    <?php if (isset($_SESSION['user'])): ?>
+                        <a href="/PHP8/HR_SYSTEM/view/Login/logout_confirm.php" target="content_frame" class="icon-button">
+                            <i class="fas fa-user-circle fa-lg"></i>
+                            <span class="ms-1"><?php echo htmlspecialchars($_SESSION['user']['username']); ?></span>
+                        </a>
+                    <?php else: ?>
+                        <a href="/PHP8/HR_SYSTEM/view/Login/login.php" target="content_frame" class="icon-button">
+                            <i class="fas fa-user-circle fa-lg"></i>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </nav>
-  
-</body>
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Logout',
+            text: 'Are you sure you want to logout?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, logout',
+            cancelButtonText: 'No, stay logged in',
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading state
+                Swal.fire({
+                    title: 'Logging out...',
+                    text: 'Please wait',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                fetch('/PHP8/HR_SYSTEM/action/Login/logout.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.redirect) {
+                            window.location.href = data.redirect;
+                        }
+                    });
+            }
+        });
+    }
+
+    function showLoginModal() {
+        Swal.fire({
+            title: 'Login',
+            html: `
+                <form id="loginForm" class="text-start">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                </form>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Login',
+            cancelButtonText: 'Cancel',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                if (!username || !password) {
+                    Swal.showValidationMessage('Please fill in all fields');
+                    return false;
+                }
+
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+                formData.append('csrf_token', '<?php echo $_SESSION['csrf_token'] ?? ''; ?>');
+
+                return fetch('/PHP8/HR_SYSTEM/action/Login/login.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'error') {
+                        throw new Error(data.message);
+                    }
+                    return data;
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(error.message);
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Login successful',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.reload();
+                });
+            }
+        });
+    }
+
+    function showProfileModal() {
+        Swal.fire({
+            title: 'User Profile',
+            html: `
+                <div class="text-start">
+                    <p><strong>Username:</strong> <?php echo isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']['username']) : ''; ?></p>
+                    <p><strong>Role:</strong> <?php echo isset($_SESSION['user']) ? htmlspecialchars($_SESSION['user']['role']) : ''; ?></p>
+                </div>
+            `,
+            confirmButtonText: 'Close'
+        });
+    }
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+</body>
 </html>

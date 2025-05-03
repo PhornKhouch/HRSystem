@@ -80,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $department = htmlspecialchars(trim($_POST['department']), ENT_QUOTES, 'UTF-8');
         $division = isset($_POST['division']) ? htmlspecialchars(trim($_POST['division']), ENT_QUOTES, 'UTF-8') : null;
         $startDate = htmlspecialchars(trim($_POST['startDate']), ENT_QUOTES, 'UTF-8');
+        $isProb = isset($_POST['isProb']) ? (int)$_POST['isProb'] : 0;
         $status = htmlspecialchars(trim($_POST['status']), ENT_QUOTES, 'UTF-8');
         $salary = filter_var(trim($_POST['salary']), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $lineManager = isset($_POST['lineManager']) ? htmlspecialchars(trim($_POST['lineManager']), ENT_QUOTES, 'UTF-8') : null;

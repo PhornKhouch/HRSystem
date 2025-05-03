@@ -14,7 +14,7 @@ include("../../Config/conect.php");
         </thead>
         <tbody id="data">
             <?php
-                $sql = "SELECT * FROM telegram_config";
+                $sql = "SELECT * FROM sytelegram_config";
                 $result = $con->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {

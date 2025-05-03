@@ -222,6 +222,39 @@ if (!isset($_SESSION['csrf_token'])) {
                                 <input type="date" class="form-control" id="startDate" name="startDate"  >
                             </div>
                            
+                            <div class="col-md-4">
+                                <label for="probationDate" class="form-label">Probation End Date</label>
+                                <input type="date" class="form-control" id="probationDate" name="probationDate">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="isProb" class="form-label">Probation Status</label>
+                                <select class="form-select" id="isProb" name="isProb">
+                                    <option value="1">In Probation</option>
+                                    <option value="0">Passed Probation</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="telegram" class="form-label">Telegram</label>
+                                <!-- <input type="text" class="form-control" id="telegram" name="telegram"> -->
+                                 <select name="telegram" id="telegram" class="form-select">
+                                     <option value="">Select Telegram</option>
+                                    <?php
+                                    $stmt = $con->prepare("SELECT Chat_id, id FROM sytelegram_config");
+                                    if ($stmt) {
+                                        $stmt->execute();
+                                        $result = $stmt->get_result();
+                                        while($row = $result->fetch_assoc()) 
+                                        {
+                                            ?>
+                                                 <option value="<?php echo $row['id']; ?>"><?php echo $row['Chat_id']; ?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+
+
+                                 </select>
+                            </div>
                         </div>
 
                         <div class="row mb-3">
@@ -275,10 +308,7 @@ if (!isset($_SESSION['csrf_token'])) {
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label for="telegram" class="form-label">Telegram</label>
-                                <input type="text" class="form-control" id="telegram" name="telegram">
-                            </div>
+                           
                             <div class="col-md-4">
                                 <label for="payParamter" class="form-label">Pay Parameter</label>
                                 <!-- <input type="text" class="form-control" id="payParamter" name="payParamter"> -->
