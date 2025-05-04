@@ -1,15 +1,16 @@
 <?php
 include("../../Config/conect.php");
-
 ?>
 
     <table id="TelegramConfigTable" class="table table-striped" style="width:100%">
         <thead>
             <tr>
                 <th style="width: 150px"><button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTelegramConfigModal">Add</button></th>
-                <th>Token</th>
+                <th>Chat Name</th>
                 <th>Chat ID</th>
-                <th>Status</th>
+                <th>Bot Token</th>
+                <th>description</th>
+                <th>status</th>
             </tr>
         </thead>
         <tbody id="data">
@@ -21,20 +22,30 @@ include("../../Config/conect.php");
             ?>
                     <tr data-id="<?php echo $row['id']; ?>">
                         <td>
-                            <button class="btn btn-primary btn-sm edit-telegram-config-btn" 
+                            <button class="btn btn-primary btn-sm edit-telegram-btn" 
                                     data-id="<?php echo $row['id']; ?>"
-                                    data-token="<?php echo $row['token']; ?>"
+                                    data-chat-name="<?php echo $row['chat_name']; ?>"
                                     data-chat-id="<?php echo $row['chat_id']; ?>"
+                                    data-bot-token="<?php echo $row['bot_token']; ?>"
+                                    data-description="<?php echo $row['description']; ?>"
                                     data-status="<?php echo $row['status']; ?>">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="btn btn-danger btn-sm delete-telegram-config-btn" data-id="<?php echo $row['id']; ?>">
+                            <button class="btn btn-danger btn-sm delete-telegram-btn" data-id="<?php echo $row['id']; ?>">
                                 <i class="fas fa-trash"></i> Delete
                             </button>
                         </td>
-                        <td><?php echo $row['token']; ?></td>
+                        <td><?php echo $row['chat_name']; ?></td>
                         <td><?php echo $row['chat_id']; ?></td>
-                        <td><?php echo $row['status']; ?></td>
+                        <td><?php echo substr($row['bot_token'], 0, 10) . '...'; ?></td>
+                        <td><?php echo $row['description']; ?></td>
+                        <td>
+                            <center>
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" <?php echo $row['status'] == 1 ? 'checked' : ''; ?> disabled>
+                                </div>
+                            </center>
+                        </td>
                     </tr>
             <?php
                     }
@@ -42,63 +53,81 @@ include("../../Config/conect.php");
             ?>
         </tbody>
     </table>
-    <!-- Add Telegram Config Modal -->
-    <div class="modal fade" id="addTelegramConfigModal" tabindex="-1" aria-labelledby="addTelegramConfigModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addTelegramConfigModalLabel">Add New Telegram Config</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addTelegramConfigForm">
-                        <div class="mb-3">
-                            <label for="token" class="form-label">Token</label>
-                            <input type="text" class="form-control" id="token" required>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addTelegramConfigModal" tabindex="-1" aria-labelledby="addTelegramConfigModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTelegramConfigModalLabel">Add New Telegram Configuration</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addTelegramConfigForm">
+                    <div class="mb-3">
+                        <label for="chat_name" class="form-label">Chat Name</label>
+                        <input type="text" class="form-control" id="chat_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="chat_id" class="form-label">Chat ID</label>
+                        <input type="text" class="form-control" id="chat_id" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="bot_token" class="form-label">Bot Token</label>
+                        <input type="text" class="form-control" id="bot_token" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">description</label>
+                        <textarea class="form-control" id="description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3 form-switch-custom">
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="form-check-input" id="status" checked>
+                            <label class="form-check-label" for="status">Active</label>
                         </div>
-                        <div class="mb-3">
-                            <label for="chat_id" class="form-label">Chat ID</label>
-                            <input type="text" class="form-control" id="chat_id" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="status" class="form-label">Status</label>
-                            <select class="form-select" id="status" required>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="saveTelegramConfig">Save</button>
-                </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveTelegramConfig">Save</button>
             </div>
         </div>
     </div>
+</div>
 
-<!-- Edit Telegram Config Modal -->
+<!-- Edit Modal -->
 <div class="modal fade" id="editTelegramConfigModal" tabindex="-1" aria-labelledby="editTelegramConfigModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editTelegramConfigModalLabel">Edit Telegram Config</h5>
+                <h5 class="modal-title" id="editTelegramConfigModalLabel">Edit Telegram Configuration</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="editTelegramConfigForm">
-                    <input type="hidden" id="edit_telegram_config_id">
+                    <input type="hidden" id="edit_id">
                     <div class="mb-3">
-                        <label for="edit_token" class="form-label">Token</label>
-                        <input type="text" class="form-control" id="edit_token" required>
+                        <label for="edit_chat_name" class="form-label">Chat Name</label>
+                        <input type="text" class="form-control" id="edit_chat_name" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_chat_id" class="form-label">Chat ID</label>
                         <input type="text" class="form-control" id="edit_chat_id" required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_status" class="form-label">Status</label>
-                        <input type="number" class="form-control" id="edit_status" required>
+                        <label for="edit_bot_token" class="form-label">Bot Token</label>
+                        <input type="text" class="form-control" id="edit_bot_token" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_description" class="form-label">description</label>
+                        <textarea class="form-control" id="edit_description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3 form-switch-custom">
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="form-check-input" id="edit_status">
+                            <label class="form-check-label" for="edit_status">Active</label>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -124,52 +153,72 @@ include("../../Config/conect.php");
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
-        // Initialize DataTable
-        let holidayTable;
+        // Initialize DataTable with column definitions
         if (!$.fn.DataTable.isDataTable('#TelegramConfigTable')) {
-            holidayTable = $('#TelegramConfigTable').DataTable({
+            telegramTable = $('#TelegramConfigTable').DataTable({
                 responsive: true,
                 lengthChange: true,
-                autoWidth: false
+                autoWidth: false,
+                columns: [
+                    { data: 'actions', orderable: false },
+                    { data: 'chat_name' },
+                    { data: 'chat_id' },
+                    { data: 'bot_token' },
+                    { data: 'description' },
+                    { data: 'status', orderable: false }
+                ]
             });
         } else {
-            holidayTable = $('#TelegramConfigTable').DataTable();
+            telegramTable = $('#TelegramConfigTable').DataTable();
         }
 
-        // Add new holiday
+        // Add new Telegram config
         $('#saveTelegramConfig').click(function() {
             if (!$('#addTelegramConfigForm')[0].checkValidity()) {
                 $('#addTelegramConfigForm')[0].reportValidity();
                 return;
             }
 
+            var status = $('#status').is(':checked') ? 1 : 0;
+
             $.ajax({
                 url: "../../action/Telegramconfig/create.php",
                 type: "POST",
                 data: {
                     type: "TelegramConfig",
-                    token: $('#token').val(),
+                    chat_name: $('#chat_name').val(),
                     chat_id: $('#chat_id').val(),
-                    status: $('#status').val()
+                    bot_token: $('#bot_token').val(),
+                    description: $('#description').val(),
+                    status: status
                 },
                 success: function(response) {
-                    const newId = response.id || Date.now(); // Fallback to timestamp if no ID returned
-                    
-                    holidayTable.row.add([
-                        `<button class="btn btn-primary btn-sm edit-telegram-config-btn" 
-                            data-id="${newId}" 
-                            data-token="${$('#token').val()}"
-                            data-chat_id="${$('#chat_id').val()}"
-                            data-status="${$('#status').val()}">
+                    const rowData = {
+                        actions: `<button class="btn btn-primary btn-sm edit-telegram-btn" 
+                            data-id="${response.id}"
+                            data-chat-name="${$('#chat_name').val()}"
+                            data-chat-id="${$('#chat_id').val()}"
+                            data-bot-token="${$('#bot_token').val()}"
+                            data-description="${$('#description').val()}"
+                            data-status="${status}">
                             <i class="fas fa-edit"></i> Edit
                          </button>
-                         <button class="btn btn-danger btn-sm delete-telegram-config-btn" data-id="${newId}">
+                         <button class="btn btn-danger btn-sm delete-telegram-btn" data-id="${response.id}">
                             <i class="fas fa-trash"></i> Delete
                          </button>`,
-                        $('#token').val(),
-                        $('#chat_id').val(),
-                        $('#status').val()
-                    ]).draw(false);
+                        chat_name: $('#chat_name').val(),
+                        chat_id: $('#chat_id').val(),
+                        bot_token: $('#bot_token').val().substring(0, 10) + '...',
+                        description: $('#description').val(),
+                        status: `<center>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" ${status ? 'checked' : ''} disabled>
+                            </div>
+                        </center>`
+                    };
+
+                    // Add new row to DataTable
+                    telegramTable.row.add(rowData).draw(false);
 
                     // Hide modal and clean up
                     $('#addTelegramConfigModal').modal('hide');
@@ -177,77 +226,52 @@ include("../../Config/conect.php");
                     $('.modal-backdrop').remove();
                     
                     // Clear form
-                    $('#token').val('');
+                    $('#chat_name').val('');
                     $('#chat_id').val('');
-                    $('#status').val('');
+                    $('#bot_token').val('');
+                    $('#description').val('');
+                    $('#status').prop('checked', true);
 
-                    showToast('success', 'Telegram config added successfully');
+                    showToast('success', 'Telegram configuration added successfully');
                 },
                 error: function(xhr) {
-                    showToast('error', xhr.responseText || 'Error adding telegram config');
-                }
-            });
-        });
-
-        // Delete holiday
-        $(document).on('click', '.delete-telegram-config-btn', function() {
-            const id = $(this).data('id');
-            
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: "../../action/Telegramconfig/delete.php",
-                        type: "POST",
-                        data: {
-                            type: "TelegramConfig",
-                            id: id
-                        },
-                        success: function(response) {
-                            holidayTable.row('.selected').remove().draw(false);
-                            showToast('success', 'Telegram config deleted successfully');
-                        },
-                        error: function(xhr) {
-                            showToast('error', xhr.responseText || 'Error deleting telegram config');
-                        }
-                    });
+                    showToast('error', xhr.responseText || 'Error adding Telegram configuration');
                 }
             });
         });
 
         // Edit button click handler
-        $(document).on('click', '.edit-telegram-config-btn', function() {
+        $(document).on('click', '.edit-telegram-btn', function() {
             const id = $(this).data('id');
-            const token = $(this).data('token');
-            const chat_id = $(this).data('chat_id');
-            const status = $(this).data('status');
+            const chatName = $(this).data('chat-name');
+            const chatId = $(this).data('chat-id');
+            const botToken = $(this).data('bot-token');
+            const description = $(this).data('description');
+            const status = parseInt($(this).data('status'));
 
-            $('#edit_telegram_config_id').val(id);
-            $('#edit_token').val(token);
-            $('#edit_chat_id').val(chat_id);
-            $('#edit_status').val(status);
+            $('#edit_id').val(id);
+            $('#edit_chat_name').val(chatName);
+            $('#edit_chat_id').val(chatId);
+            $('#edit_bot_token').val(botToken);
+            $('#edit_description').val(description);
+            $('#edit_status').prop('checked', status === 1);
 
             $('#editTelegramConfigModal').modal('show');
         });
 
-        // Update holiday
+        // Update Telegram config
         $('#updateTelegramConfig').click(function() {
             if (!$('#editTelegramConfigForm')[0].checkValidity()) {
                 $('#editTelegramConfigForm')[0].reportValidity();
                 return;
             }
 
-            const id = $('#edit_telegram_config_id').val();
-            const token = $('#edit_token').val();
-            const chat_id = $('#edit_chat_id').val();
-            const status = $('#edit_status').val();
+            const id = $('#edit_id').val();
+            const status = $('#edit_status').is(':checked') ? 1 : 0;
+            const chatName = $('#edit_chat_name').val();
+            const chatId = $('#edit_chat_id').val();
+            const botToken = $('#edit_bot_token').val();
+            const description = $('#edit_description').val();
 
             $.ajax({
                 url: "../../action/Telegramconfig/update.php",
@@ -255,44 +279,62 @@ include("../../Config/conect.php");
                 data: {
                     type: "TelegramConfig",
                     id: id,
-                    token: token,
-                    chat_id: chat_id,
+                    chat_name: chatName,
+                    chat_id: chatId,
+                    bot_token: botToken,
+                    description: description,
                     status: status
                 },
                 success: function(response) {
-                    const row = holidayTable.row($(`tr[data-id="${id}"]`));
-                    const rowData = [
-                        `<button class="btn btn-primary btn-sm edit-telegram-config-btn" 
-                            data-id="${id}" 
-                            data-token="${token}"
-                            data-chat_id="${chat_id}"
-                            data-status="${status}">
-                            <i class="fas fa-edit"></i> Edit
-                         </button>
-                         <button class="btn btn-danger btn-sm delete-telegram-config-btn" data-id="${id}">
-                            <i class="fas fa-trash"></i> Delete
-                         </button>`,
-                        token,
-                        chat_id,
-                        status
-                    ];
-                    row.data(rowData).draw(false);
+                    // Find the row index first
+                    const rowIndex = telegramTable.row($(`tr[data-id="${id}"]`)).index();
+                    
+                    if (rowIndex !== undefined) {
+                        const rowData = {
+                            actions: `<button class="btn btn-primary btn-sm edit-telegram-btn" 
+                                data-id="${id}"
+                                data-chat-name="${chatName}"
+                                data-chat-id="${chatId}"
+                                data-bot-token="${botToken}"
+                                data-description="${description}"
+                                data-status="${status}">
+                                <i class="fas fa-edit"></i> Edit
+                             </button>
+                             <button class="btn btn-danger btn-sm delete-telegram-btn" data-id="${id}">
+                                <i class="fas fa-trash"></i> Delete
+                             </button>`,
+                            chat_name: chatName,
+                            chat_id: chatId,
+                            bot_token: botToken.substring(0, 10) + '...',
+                            description: description,
+                            status: `<center>
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input" ${status ? 'checked' : ''} disabled>
+                                </div>
+                            </center>`
+                        };
 
-                    // Hide modal and clean up
-                    $('#editTelegramConfigModal').modal('hide');
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
+                        // Update the row data
+                        telegramTable.row(rowIndex).data(rowData).draw(false);
 
-                    showToast('success', 'Telegram config updated successfully');
+                        // Hide modal and clean up
+                        $('#editTelegramConfigModal').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+
+                        showToast('success', 'Telegram configuration updated successfully');
+                    } else {
+                        showToast('error', 'Could not find the row to update');
+                    }
                 },
                 error: function(xhr) {
-                    showToast('error', xhr.responseText || 'Error updating telegram config');
+                    showToast('error', xhr.responseText || 'Error updating Telegram configuration');
                 }
             });
         });
 
         // Delete button click handler
-        $(document).on('click', '.delete-telegram-config-btn', function() {
+        $(document).on('click', '.delete-telegram-btn', function() {
             const row = $(this).closest('tr');
             const id = $(this).data('id');
 
@@ -310,30 +352,29 @@ include("../../Config/conect.php");
                         url: "../../action/Telegramconfig/delete.php",
                         type: "POST",
                         data: {
-                            type: "telegram_config",
+                            type: "TelegramConfig",
                             id: id
                         },
                         success: function(response) {
                             try {
                                 const jsonResponse = JSON.parse(response);
                                 if (jsonResponse.status === 'success') {
-                                    holidayTable.row(row).remove().draw(false);
-                                    showToast('success', jsonResponse.message || 'Telegram config deleted successfully');
+                                    telegramTable.row(row).remove().draw(false);
+                                    showToast('success', jsonResponse.message || 'Telegram configuration deleted successfully');
                                 } else {
-                                    showToast('error', jsonResponse.message || 'Error deleting telegram config');
+                                    showToast('error', jsonResponse.message || 'Error deleting Telegram configuration');
                                 }
                             } catch (e) {
-                                // If response is not JSON, treat it as plain text
                                 if (response.toLowerCase().includes('success')) {
-                                    holidayTable.row(row).remove().draw(false);
-                                    showToast('success', 'Telegram config deleted successfully');
+                                    telegramTable.row(row).remove().draw(false);
+                                    showToast('success', 'Telegram configuration deleted successfully');
                                 } else {
-                                    showToast('error', response || 'Error deleting telegram config');
+                                    showToast('error', response || 'Error deleting Telegram configuration');
                                 }
                             }
                         },
                         error: function(xhr) {
-                            showToast('error', xhr.responseText || 'Error deleting telegram config');
+                            showToast('error', xhr.responseText || 'Error deleting Telegram configuration');
                         }
                     });
                 }
@@ -431,4 +472,41 @@ include("../../Config/conect.php");
         opacity: 1;
     }
 }
-</style>   
+
+.form-switch-custom {
+    padding: 0.5rem 0;
+}
+
+.form-switch-custom .form-check.form-switch {
+    padding-left: 2.5em;
+    margin: 0;
+}
+
+.form-switch-custom .form-check-input {
+    width: 2.5em;
+    height: 1.25em;
+    margin-left: -2.5em;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
+    background-position: left center;
+    border-radius: 2em;
+    transition: background-position .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-switch-custom .form-check-input:checked {
+    background-position: right center;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.form-switch-custom .form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    border-color: #86b7fe;
+}
+
+.form-switch-custom .form-check-label {
+    cursor: pointer;
+    padding-left: 0.5rem;
+    user-select: none;
+}
+</style>

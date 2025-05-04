@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 27, 2025 at 03:22 PM
+-- Generation Time: May 04, 2025 at 02:59 PM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `careerhistory` (
   `UpdatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   KEY `EmployeeID` (`EmployeeID`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `careerhistory`
@@ -72,7 +72,8 @@ CREATE TABLE IF NOT EXISTS `careerhistory` (
 
 INSERT INTO `careerhistory` (`ID`, `CareerHistoryType`, `EmployeeID`, `Company`, `Division`, `PositionTitle`, `Department`, `StartDate`, `EndDate`, `Remark`, `Increase`, `CreatedAt`, `UpdatedAt`) VALUES
 (15, 'NEW', 'A01', '', '', 'P03', 'IT', '2025-04-01', NULL, NULL, NULL, '2025-04-27 21:17:58', '2025-04-27 21:17:58'),
-(16, 'NEW', 'A02', '', '', 'P05', 'HR', '2025-04-01', NULL, NULL, NULL, '2025-04-27 21:19:41', '2025-04-27 21:19:41');
+(16, 'NEW', 'A02', '', '', 'P05', 'HR', '2025-04-01', NULL, NULL, NULL, '2025-04-27 21:19:41', '2025-04-27 21:19:41'),
+(19, 'NEW', 'A03', '', '', 'P02', 'HR', '2025-05-01', NULL, NULL, NULL, '2025-05-03 21:42:08', '2025-05-03 21:42:08');
 
 -- --------------------------------------------------------
 
@@ -296,9 +297,11 @@ CREATE TABLE IF NOT EXISTS `hrstaffprofile` (
   `LineManager` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Hod` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `IsProb` int NOT NULL,
   `Salary` decimal(10,2) DEFAULT NULL,
   `PayParameter` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Telegram` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ProbationDate` date NOT NULL,
   PRIMARY KEY (`EmpCode`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -306,9 +309,65 @@ CREATE TABLE IF NOT EXISTS `hrstaffprofile` (
 -- Dumping data for table `hrstaffprofile`
 --
 
-INSERT INTO `hrstaffprofile` (`EmpCode`, `EmpName`, `Gender`, `Dob`, `Position`, `Department`, `Company`, `Level`, `Division`, `StartDate`, `Status`, `Contact`, `Email`, `Address`, `LineManager`, `Hod`, `Photo`, `Salary`, `PayParameter`, `Telegram`) VALUES
-('A01', 'Phorn Khouch', 'Male', '2025-04-01', 'P03', 'IT', 'CB', NULL, 'D01', '2025-04-01', 'Active', '', '', '', '', '', 'Uploads/staff_photos/A01_1745763478.jpg', 999999.00, NULL, ''),
-('A02', 'Sok kimheng', 'Male', '2025-04-01', 'P05', 'HR', 'CB', NULL, 'D01', '2025-04-01', 'Active', '', '', '', 'A01', 'A01', 'Uploads/staff_photos/A02_1745763581.jpg', 99999.00, NULL, '');
+INSERT INTO `hrstaffprofile` (`EmpCode`, `EmpName`, `Gender`, `Dob`, `Position`, `Department`, `Company`, `Level`, `Division`, `StartDate`, `Status`, `Contact`, `Email`, `Address`, `LineManager`, `Hod`, `Photo`, `IsProb`, `Salary`, `PayParameter`, `Telegram`, `ProbationDate`) VALUES
+('A01', 'Phorn Khouch', 'Male', '2025-04-01', 'P03', 'IT', 'CB', NULL, 'D01', '2025-04-01', 'Active', '', '', '', '', '', 'Uploads/staff_photos/A01_1745763478.jpg', 0, 999999.00, NULL, '', '0000-00-00'),
+('A02', 'Sok kimheng', 'Male', '2025-04-01', 'P05', 'HR', 'CB', NULL, 'D01', '2025-04-01', 'Active', '', '', '', 'A01', 'A01', 'Uploads/staff_photos/A02_1745763581.jpg', 0, 99999.00, '', '', '0000-00-00'),
+('A03', 'Sok Dara', 'Male', '2025-05-01', 'P02', 'HR', 'CB', NULL, 'D01', '2025-05-01', 'Active', '', '', '', '0', 'A01', 'Uploads/staff_photos/A03_1746283328.jpg', 1, 123.00, NULL, '', '0000-00-00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hrusers`
+--
+
+DROP TABLE IF EXISTS `hrusers`;
+CREATE TABLE IF NOT EXISTS `hrusers` (
+  `UserID` int NOT NULL AUTO_INCREMENT,
+  `Username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Role` enum('admin','manager','staff') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'staff',
+  `Status` enum('active','inactive') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active',
+  `LastLogin` datetime DEFAULT NULL,
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`UserID`),
+  UNIQUE KEY `Username` (`Username`),
+  UNIQUE KEY `Email` (`Email`),
+  KEY `idx_username` (`Username`),
+  KEY `idx_email` (`Email`),
+  KEY `idx_status` (`Status`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `hrusers`
+--
+
+INSERT INTO `hrusers` (`UserID`, `Username`, `Password`, `Email`, `Role`, `Status`, `LastLogin`, `CreatedAt`, `UpdatedAt`) VALUES
+(5, 'A01', '123', 'pkhouch97@gmail.com', 'staff', 'active', NULL, '2025-05-03 19:30:38', '2025-05-04 15:00:17'),
+(6, 'admin', '123', 'pkhouc@gmail.com', 'staff', 'active', NULL, '2025-05-04 15:03:42', '2025-05-04 15:03:42'),
+(7, 'A02', '123', 'admin123@gmil.com', 'staff', 'active', NULL, '2025-05-04 21:19:54', '2025-05-04 21:19:54');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hruser_permissions`
+--
+
+DROP TABLE IF EXISTS `hruser_permissions`;
+CREATE TABLE IF NOT EXISTS `hruser_permissions` (
+  `PermissionID` int NOT NULL AUTO_INCREMENT,
+  `UserID` int NOT NULL,
+  `ModuleName` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `CanView` tinyint(1) NOT NULL DEFAULT '0',
+  `CanCreate` tinyint(1) NOT NULL DEFAULT '0',
+  `CanEdit` tinyint(1) NOT NULL DEFAULT '0',
+  `CanDelete` tinyint(1) NOT NULL DEFAULT '0',
+  `CreatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`PermissionID`),
+  UNIQUE KEY `user_module` (`UserID`,`ModuleName`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -330,25 +389,22 @@ CREATE TABLE IF NOT EXISTS `lmleavebalance` (
   `created_at` datetime NOT NULL,
   `DefaultBalance` int NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=207 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=216 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `lmleavebalance`
 --
 
 INSERT INTO `lmleavebalance` (`ID`, `EmpCode`, `LeaveType`, `Balance`, `Entitle`, `CurrentBalance`, `Taken`, `inmonth`, `inyear`, `created_at`, `DefaultBalance`) VALUES
-(195, 'A01', 'SL', 7.00, 7.00, 7.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
-(196, 'A01', 'AL', 13.50, 13.50, 0.50, 1.00, 0, 2025, '0000-00-00 00:00:00', 0),
-(197, 'A01', 'SPL', 7.00, 7.00, 7.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
-(198, 'A02', 'SL', 7.00, 7.00, 7.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
-(199, 'A02', 'AL', 13.50, 13.50, -0.50, 2.00, 0, 2025, '0000-00-00 00:00:00', 0),
-(200, 'A02', 'SPL', 7.00, 7.00, 7.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
-(201, 'A01', 'SL', 7.00, 7.00, 7.00, 0.00, 0, 2026, '0000-00-00 00:00:00', 0),
-(202, 'A01', 'AL', 18.00, 18.00, -12.00, 0.00, 0, 2026, '0000-00-00 00:00:00', 0),
-(203, 'A01', 'SPL', 7.00, 7.00, 7.00, 0.00, 0, 2026, '0000-00-00 00:00:00', 0),
-(204, 'A02', 'SL', 7.00, 7.00, 7.00, 0.00, 0, 2026, '0000-00-00 00:00:00', 0),
-(205, 'A02', 'AL', 18.00, 18.00, -12.00, 0.00, 0, 2026, '0000-00-00 00:00:00', 0),
-(206, 'A02', 'SPL', 7.00, 7.00, 7.00, 0.00, 0, 2026, '0000-00-00 00:00:00', 0);
+(207, 'A01', 'SL', 7.00, 7.00, 7.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
+(208, 'A01', 'AL', 13.50, 13.50, 3.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
+(209, 'A01', 'SPL', 7.00, 7.00, 7.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
+(210, 'A02', 'SL', 7.00, 7.00, 7.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
+(211, 'A02', 'AL', 13.50, 13.50, 1.00, 2.00, 0, 2025, '0000-00-00 00:00:00', 0),
+(212, 'A02', 'SPL', 7.00, 7.00, 7.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
+(213, 'A03', 'SL', 7.00, 7.00, 7.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
+(214, 'A03', 'AL', 12.00, 12.00, 1.50, 0.00, 0, 2025, '0000-00-00 00:00:00', 0),
+(215, 'A03', 'SPL', 7.00, 7.00, 7.00, 0.00, 0, 2025, '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -367,8 +423,27 @@ CREATE TABLE IF NOT EXISTS `lmleaverequest` (
   `LeaveDay` int NOT NULL,
   `PHOrOffDay` int NOT NULL,
   `Status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `UpdatedAt` timestamp NOT NULL,
+  `ApprovedBy` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `RejectedBy` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `lmleaverequest`
+--
+
+INSERT INTO `lmleaverequest` (`ID`, `EmpCode`, `LeaveType`, `Reason`, `FromDate`, `ToDate`, `LeaveDay`, `PHOrOffDay`, `Status`, `UpdatedAt`, `ApprovedBy`, `RejectedBy`) VALUES
+(21, 'A02', 'SPL', 'test', '2025-05-06', '2025-05-10', 4, 0, 'Approved', '2025-05-02 14:53:13', 'HR Admin', ''),
+(22, 'A02', 'AL', 'test', '2025-05-09', '2025-05-09', 1, 0, 'Approved', '2025-05-02 15:13:27', 'HR Admin', ''),
+(20, 'A01', 'AL', 'test', '2025-05-01', '2025-05-01', 1, 0, 'Rejected', '2025-05-02 14:50:48', '', 'HR Admin'),
+(23, 'A02', 'AL', 'test', '2025-05-12', '2025-05-12', 1, 0, 'Approved', '2025-05-02 15:12:34', 'HR Admin', ''),
+(24, 'A02', 'AL', 'test', '2025-05-03', '2025-05-05', 1, 0, 'Approved', '2025-05-02 15:14:28', 'HR Admin', ''),
+(25, 'A01', 'AL', 'test', '2025-05-13', '2025-05-13', 1, 0, 'Approved', '2025-05-02 15:15:15', 'HR Admin', ''),
+(27, 'A02', 'AL', 'test', '2025-05-16', '2025-05-23', 6, 0, 'Rejected', '2025-05-03 09:57:36', '', 'HR Admin'),
+(28, 'A03', 'AL', 'test', '2025-05-06', '2025-05-09', 4, 0, 'Approved', '2025-05-03 14:47:35', 'HR Admin', ''),
+(30, 'A03', 'AL', 'test', '2025-05-15', '2025-05-15', 1, 0, 'Rejected', '2025-05-03 14:51:39', '', 'HR Admin'),
+(31, 'A03', 'AL', 'test', '2025-05-14', '2025-05-14', 1, 0, 'Approved', '2025-05-03 14:56:10', 'HR Admin', '');
 
 -- --------------------------------------------------------
 
@@ -394,7 +469,7 @@ CREATE TABLE IF NOT EXISTS `lmleavetype` (
 INSERT INTO `lmleavetype` (`Code`, `LeaveType`, `IsProbation`, `IsDeduct`, `IsOverBalance`, `default_balance`) VALUES
 ('ML', 'Materity Leave', 0, 0, 0, 90),
 ('SL', 'Sick Leave', 0, 0, 0, 7),
-('AL', 'Annaul Leave', 0, 0, 0, 18),
+('AL', 'Annaul Leave', 1, 0, 0, 18),
 ('SPL', 'Special Leave', 0, 0, 0, 7),
 ('UL', 'Unpaid Leave', 1, 1, 0, 0);
 
@@ -507,6 +582,14 @@ CREATE TABLE IF NOT EXISTS `protrate` (
   PRIMARY KEY (`Code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `protrate`
+--
+
+INSERT INTO `protrate` (`Code`, `Des`, `Rate`) VALUES
+('SUN', 'OT Sunday', 200.00),
+('PH', 'Public Holiday', 300.00);
+
 -- --------------------------------------------------------
 
 --
@@ -526,6 +609,13 @@ CREATE TABLE IF NOT EXISTS `provertime` (
   `Reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `provertime`
+--
+
+INSERT INTO `provertime` (`Provtime`, `ID`, `Empcode`, `OTType`, `OTDate`, `FromTime`, `ToTime`, `hour`, `Reason`) VALUES
+('2025-05-04 21:27:24', 0, 'A03', 'PH', '2025-05-04', '17:00:00', '21:00:00', 4.00, 'test');
 
 -- --------------------------------------------------------
 
@@ -665,6 +755,42 @@ CREATE TABLE IF NOT EXISTS `rcmonboarding` (
   `Photo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sytelegram_config`
+--
+
+DROP TABLE IF EXISTS `sytelegram_config`;
+CREATE TABLE IF NOT EXISTS `sytelegram_config` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `chat_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `chat_id` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bot_token` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `status` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sytelegram_config`
+--
+
+INSERT INTO `sytelegram_config` (`id`, `chat_name`, `chat_id`, `bot_token`, `description`, `status`) VALUES
+(3, 'fsd', 'fdsfd', 'fsdfsdfsd', 'fsd', 1),
+(4, 'fsdg', 'sdds', 'gsd', 'dsg', 1),
+(5, 'fsdfs', 'f534546', '655657', '', 1);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `hruser_permissions`
+--
+ALTER TABLE `hruser_permissions`
+  ADD CONSTRAINT `hruser_permissions_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `hrusers` (`UserID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

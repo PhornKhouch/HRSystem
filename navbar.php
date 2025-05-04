@@ -101,17 +101,9 @@ include("root/header.php");
                         <option value="en">English</option>
                         <option value="KH">Khmer</option>
                     </select>
-                    <!-- User Icon -->
-                    <?php if (isset($_SESSION['user'])): ?>
-                        <a href="/PHP8/HR_SYSTEM/view/Login/logout_confirm.php" target="content_frame" class="icon-button">
-                            <i class="fas fa-user-circle fa-lg"></i>
-                            <span class="ms-1"><?php echo htmlspecialchars($_SESSION['user']['username']); ?></span>
-                        </a>
-                    <?php else: ?>
-                        <a href="/PHP8/HR_SYSTEM/view/Login/login.php" target="content_frame" class="icon-button">
-                            <i class="fas fa-user-circle fa-lg"></i>
-                        </a>
-                    <?php endif; ?>
+                    <a href="view/Login/logout_confirm.php" target="content" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -123,41 +115,7 @@ include("root/header.php");
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
     <script>
-    function confirmLogout() {
-        Swal.fire({
-            title: 'Logout',
-            text: 'Are you sure you want to logout?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, logout',
-            cancelButtonText: 'No, stay logged in',
-            allowOutsideClick: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Show loading state
-                Swal.fire({
-                    title: 'Logging out...',
-                    text: 'Please wait',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    showConfirmButton: false,
-                    willOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-                
-                fetch('/PHP8/HR_SYSTEM/action/Login/logout.php')
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.redirect) {
-                            window.location.href = data.redirect;
-                        }
-                    });
-            }
-        });
-    }
+ 
 
     function showLoginModal() {
         Swal.fire({

@@ -37,6 +37,9 @@
                         <a href="../view/PayrollSetting/index.php" target="content">Payroll</a>
                     </li>
                     <li>
+                        <a href="../view/OTSetting/index.php" target="content">Tax Setting</a>
+                    </li>
+                    <li>
                         <a href="../view/LeavePolicy/index.php" target="content">Leave Policy</a>
                     </li>
                     <li>
@@ -44,6 +47,9 @@
                     </li>
                     <li>
                         <a href="../view/Telegramconfig/index.php" target="content">Telegram config</a>
+                    </li>
+                    <li>
+                        <a href="../view/OTSetting/index.php" target="content">OT Setting</a>
                     </li>
                 </ul>
             </li>
@@ -103,10 +109,25 @@
                 </a>
                 <ul class="collapse list-unstyled" id="User">
                     <li>
-                        <a href="../AddUserAdmin/index.php" target="content">User Admin</a>
+                        <a href="../view/PROvertime/index.php" target="content">Overtime</a>
                     </li>
                     <li>
-                        <a href="../AddNormalUser/index.php" target="content">User</a>
+                        <a href="../AddNormalUser/index.php" target="content">Allowance</a>
+                    </li>
+                    <li>
+                        <a href="../AddNormalUser/index.php" target="content">Bonus</a>
+                    </li>
+                    <li>
+                        <a href="../AddNormalUser/index.php" target="content">Deduction</a>
+                    </li>
+                    <li>
+                        <a href="../AddNormalUser/index.php" target="content">Generate Salary</a>    
+                    </li>
+                    <li>
+                        <a href="../AddNormalUser/index.php" target="content">Pay Detail</a>    
+                    </li>
+                    <li>
+                        <a href="../AddNormalUser/index.php" target="content">Salary Approval</a>    
                     </li>
                 </ul>
             </li>

@@ -44,14 +44,16 @@ session_start();
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="employeeID" class="form-label required">Employee ID</label>
-                                        <select class="form-select" id="employeeID" name="empCode" required>
-                                            <option value="">Select Employee</option>
+                                        <select class="form-select" id="employeeID" disabled>
                                             <?php
-                                            $sql = "SELECT EmpCode, EmpName FROM hrstaffprofile WHERE Status = 'Active' ORDER BY EmpName";
+                                            $userUsername = $_SESSION['user']['username'];
+                                            $sql = "SELECT EmpCode, EmpName FROM hrstaffprofile WHERE Status = 'Active' AND EmpCode = '$userUsername' ORDER BY EmpName";
                                             $result = $con->query($sql);
                                             while($row = $result->fetch_assoc()) {
-                                                echo "<option value='" . htmlspecialchars($row['EmpCode']) . "'>" . 
+                                                echo "<option value='" . htmlspecialchars($row['EmpCode']) . "' selected>" . 
                                                      htmlspecialchars($row['EmpCode'] . ' - ' . $row['EmpName']) . "</option>";
+                                                // Add hidden input to ensure the value is submitted
+                                                echo "<input type='hidden' name='empCode' value='" . htmlspecialchars($row['EmpCode']) . "'>";
                                             }
                                             ?>
                                         </select>
