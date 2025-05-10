@@ -10,6 +10,7 @@ include("../../Config/conect.php");
                 <th>Description</th>
                 <th>Rate</th>
             </tr>
+            
         </thead>
         <tbody id="data">
             <?php
@@ -40,34 +41,68 @@ include("../../Config/conect.php");
             ?>
         </tbody>
     </table>
-
+     
+    
 <!-- Add Modal -->
 <div class="modal fade" id="addOTSettingModal" tabindex="-1" aria-labelledby="addOTSettingModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addOTSettingModalLabel">Add New OT Setting</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title" id="addOTSettingModalLabel">
+                    <i class="fas fa-plus-circle me-2"></i>Add New OT Setting
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form id="addOTSettingForm">
-                    <div class="mb-3">
-                        <label for="code" class="form-label">Code</label>
-                        <input type="text" class="form-control" id="OTCode" required>
+            <div class="modal-body p-4">
+                <form id="addOTSettingForm" class="needs-validation" novalidate>
+                    <div class="mb-4">
+                        <label for="OTCode" class="form-label fw-semibold">
+                            <i class="fas fa-code me-2"></i>Code
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-hashtag text-muted"></i>
+                            </span>
+                            <input type="text" class="form-control border-start-0" id="OTCode" required
+                                   placeholder="Enter OT code">
+                            <div class="invalid-feedback">Please provide a valid code.</div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="OTDescription" required>
+                    <div class="mb-4">
+                        <label for="OTDescription" class="form-label fw-semibold">
+                            <i class="fas fa-align-left me-2"></i>Description
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-pen text-muted"></i>
+                            </span>
+                            <input type="text" class="form-control border-start-0" id="OTDescription" required
+                                   placeholder="Enter description">
+                            <div class="invalid-feedback">Please provide a description.</div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="rate" class="form-label">Rate</label>
-                        <input type="number" class="form-control" id="OTRate" step="0.1" required>
+                    <div class="mb-4">
+                        <label for="OTRate" class="form-label fw-semibold">
+                            <i class="fas fa-percentage me-2"></i>Rate
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-calculator text-muted"></i>
+                            </span>
+                            <input type="number" class="form-control border-start-0" id="OTRate" step="0.1" required
+                                   placeholder="Enter rate value">
+                            <div class="invalid-feedback">Please provide a valid rate.</div>
+                        </div>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveOTSetting">Save</button>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-light fw-semibold" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-primary fw-semibold" id="saveOTSetting">
+                    <i class="fas fa-save me-2"></i>Save Changes
+                </button>
             </div>
         </div>
     </div>
@@ -381,4 +416,127 @@ include("../../Config/conect.php");
         opacity: 1;
     }
 }
+
+/* Modern Form Styles */
+.modal-content {
+    border-radius: 15px;
+}
+
+.modal-header {
+    padding: 1.5rem 1.75rem;
+}
+
+.modal-header .modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.form-label {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: #444;
+}
+
+.input-group {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    border-radius: 8px;
+}
+
+.input-group-text {
+    border-radius: 8px 0 0 8px;
+    border: 1px solid #dee2e6;
+    padding: 0.6rem 1rem;
+}
+
+.form-control {
+    border-radius: 0 8px 8px 0;
+    padding: 0.6rem 1rem;
+    border: 1px solid #dee2e6;
+    font-size: 0.95rem;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #86b7fe;
+}
+
+.input-group:focus-within {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.input-group:focus-within .input-group-text,
+.input-group:focus-within .form-control {
+    border-color: #86b7fe;
+}
+
+.btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    transform: translateY(-1px);
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.btn-light:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.invalid-feedback {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+/* Animation for modal */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+}
+
+.modal.fade .modal-content {
+    transform: scale(0.95);
+    transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
 </style>
+
+<script>
+// Add this to your existing JavaScript
+$(document).ready(function() {
+    // ...existing code...
+
+    // Form validation
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+
+    // Input animation
+    $('.form-control').on('focus', function() {
+        $(this).closest('.input-group').addClass('focused');
+    }).on('blur', function() {
+        $(this).closest('.input-group').removeClass('focused');
+    });
+});
+</script>

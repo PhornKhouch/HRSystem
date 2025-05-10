@@ -112,13 +112,13 @@
                         <a href="../view/PROvertime/index.php" target="content">Overtime</a>
                     </li>
                     <li>
-                        <a href="../AddNormalUser/index.php" target="content">Allowance</a>
+                        <a href="../view/PRAllowance/index.php" target="content">Allowance</a>
                     </li>
                     <li>
-                        <a href="../AddNormalUser/index.php" target="content">Bonus</a>
+                        <a href="../view/PRBonus/index.php" target="content">Bonus</a>
                     </li>
                     <li>
-                        <a href="../AddNormalUser/index.php" target="content">Deduction</a>
+                        <a href="../view/PRDeduction/index.php" target="content">Deduction</a>
                     </li>
                     <li>
                         <a href="../AddNormalUser/index.php" target="content">Generate Salary</a>    
