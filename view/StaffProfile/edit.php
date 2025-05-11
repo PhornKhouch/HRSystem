@@ -365,14 +365,14 @@ try {
                                 <select name="payParamter" id="payParamter" class="form-control">
                                     <option value="">Select Pay Parameter</option>
                                     <?php
-                                    $stmt = $con->prepare("SELECT id, description FROM prpaypolicy");
+                                    $stmt = $con->prepare("SELECT code, description FROM prpaypolicy");
                                     if ($stmt) {
                                         $stmt->execute();
                                         $result = $stmt->get_result();
                                         while($row = $result->fetch_assoc()) 
                                         {
                                             ?>
-                                                 <option value="<?php echo $row['id']; ?>" <?php echo $staffData['PayParameter'] == $row['id'] ? 'selected' : ''; ?>><?php echo $row['description']; ?></option>
+                                                 <option value="<?php echo $row['code']; ?>" <?php echo $staffData['PayParameter'] == $row['code'] ? 'selected' : ''; ?>><?php echo $row['description']; ?></option>
                                             <?php
                                         }
                                     }

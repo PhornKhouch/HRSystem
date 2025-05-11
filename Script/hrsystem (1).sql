@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 04, 2025 at 02:59 PM
+-- Generation Time: May 11, 2025 at 03:14 PM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `careerhistory` (
   `UpdatedAt` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   KEY `EmployeeID` (`EmployeeID`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `careerhistory`
@@ -83,12 +83,13 @@ INSERT INTO `careerhistory` (`ID`, `CareerHistoryType`, `EmployeeID`, `Company`,
 
 DROP TABLE IF EXISTS `hisgensalary`;
 CREATE TABLE IF NOT EXISTS `hisgensalary` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `EmpCode` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `InMonth` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Inyear` int DEFAULT NULL,
   `Salary` decimal(10,2) DEFAULT NULL,
   `Allowance` decimal(10,2) DEFAULT NULL,
+  `OT` decimal(10,2) NOT NULL,
   `Bonus` decimal(10,2) DEFAULT NULL,
   `Dedction` decimal(10,2) DEFAULT NULL,
   `LeavedTax` decimal(10,2) DEFAULT NULL,
@@ -99,7 +100,19 @@ CREATE TABLE IF NOT EXISTS `hisgensalary` (
   `NSSF` decimal(10,2) DEFAULT NULL,
   `NetSalary` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `hisgensalary`
+--
+
+INSERT INTO `hisgensalary` (`ID`, `EmpCode`, `InMonth`, `Inyear`, `Salary`, `Allowance`, `OT`, `Bonus`, `Dedction`, `LeavedTax`, `Amtobetax`, `Grosspay`, `Family`, `UntaxAm`, `NSSF`, `NetSalary`) VALUES
+(10, 'A01', '2025-05', 2025, 800.00, 30.00, 34.19, 123.00, 10.00, 0.00, 0.00, 987.19, 0.00, 0.00, 0.00, 977.19),
+(11, 'A01', '2025-04', 2025, 800.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 800.00, 0.00, 0.00, 0.00, 800.00),
+(12, 'A02', '2025-04', 2025, 99999.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 99999.00, 0.00, 0.00, 0.00, 99999.00),
+(13, 'A03', '2025-04', 2025, 123.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 123.00, 0.00, 0.00, 0.00, 123.00),
+(14, 'A02', '2025-05', 2025, 99999.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 99999.00, 0.00, 0.00, 0.00, 99999.00),
+(15, 'A03', '2025-05', 2025, 123.00, 123.00, 2.10, 0.00, 10.00, 0.00, 0.00, 248.10, 0.00, 0.00, 0.00, 238.10);
 
 -- --------------------------------------------------------
 
@@ -184,13 +197,6 @@ CREATE TABLE IF NOT EXISTS `hreducation` (
   PRIMARY KEY (`Id`),
   KEY `EmpCode` (`EmpCode`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `hreducation`
---
-
-INSERT INTO `hreducation` (`Id`, `EmpCode`, `Institution`, `Degree`, `FieldOfStudy`, `StartDate`, `EndDate`) VALUES
-(3, 'A01', 'test', 'High School', 'test', '0000-00-00', '2025-04-10');
 
 -- --------------------------------------------------------
 
@@ -310,9 +316,9 @@ CREATE TABLE IF NOT EXISTS `hrstaffprofile` (
 --
 
 INSERT INTO `hrstaffprofile` (`EmpCode`, `EmpName`, `Gender`, `Dob`, `Position`, `Department`, `Company`, `Level`, `Division`, `StartDate`, `Status`, `Contact`, `Email`, `Address`, `LineManager`, `Hod`, `Photo`, `IsProb`, `Salary`, `PayParameter`, `Telegram`, `ProbationDate`) VALUES
-('A01', 'Phorn Khouch', 'Male', '2025-04-01', 'P03', 'IT', 'CB', NULL, 'D01', '2025-04-01', 'Active', '', '', '', '', '', 'Uploads/staff_photos/A01_1745763478.jpg', 0, 999999.00, NULL, '', '0000-00-00'),
-('A02', 'Sok kimheng', 'Male', '2025-04-01', 'P05', 'HR', 'CB', NULL, 'D01', '2025-04-01', 'Active', '', '', '', 'A01', 'A01', 'Uploads/staff_photos/A02_1745763581.jpg', 0, 99999.00, '', '', '0000-00-00'),
-('A03', 'Sok Dara', 'Male', '2025-05-01', 'P02', 'HR', 'CB', NULL, 'D01', '2025-05-01', 'Active', '', '', '', '0', 'A01', 'Uploads/staff_photos/A03_1746283328.jpg', 1, 123.00, NULL, '', '0000-00-00');
+('A01', 'Phorn Khouch', 'Male', '2025-04-01', 'P03', 'IT', 'CB', NULL, 'D01', '2025-04-01', 'Active', '', '', '', '', '', 'Uploads/staff_photos/A01_1745763478.jpg', 0, 800.00, 'Staff', '', '0000-00-00'),
+('A02', 'Sok kimheng', 'Male', '2025-04-01', 'P05', 'HR', 'CB', NULL, 'D01', '2025-04-01', 'Active', '', '', '', 'A01', 'A01', 'Uploads/staff_photos/A02_1745763581.jpg', 0, 99999.00, 'Staff', '', '0000-00-00'),
+('A03', 'Sok Dara', 'Male', '2025-05-01', 'P02', 'HR', 'CB', NULL, 'D01', '2025-05-01', 'Active', '', '', '', '', 'A01', 'Uploads/staff_photos/A03_1746283328.jpg', 1, 123.00, 'Staff', '', '0000-00-00');
 
 -- --------------------------------------------------------
 
@@ -345,7 +351,7 @@ CREATE TABLE IF NOT EXISTS `hrusers` (
 
 INSERT INTO `hrusers` (`UserID`, `Username`, `Password`, `Email`, `Role`, `Status`, `LastLogin`, `CreatedAt`, `UpdatedAt`) VALUES
 (5, 'A01', '123', 'pkhouch97@gmail.com', 'staff', 'active', NULL, '2025-05-03 19:30:38', '2025-05-04 15:00:17'),
-(6, 'admin', '123', 'pkhouc@gmail.com', 'staff', 'active', NULL, '2025-05-04 15:03:42', '2025-05-04 15:03:42'),
+(6, 'admin', '123', 'pkhouc@gmail.com', 'admin', 'active', NULL, '2025-05-04 15:03:42', '2025-05-11 22:03:03'),
 (7, 'A02', '123', 'admin123@gmil.com', 'staff', 'active', NULL, '2025-05-04 21:19:54', '2025-05-04 21:19:54');
 
 -- --------------------------------------------------------
@@ -481,7 +487,7 @@ INSERT INTO `lmleavetype` (`Code`, `LeaveType`, `IsProbation`, `IsDeduct`, `IsOv
 
 DROP TABLE IF EXISTS `prallowance`;
 CREATE TABLE IF NOT EXISTS `prallowance` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `EmpCode` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `AllowanceType` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -491,7 +497,40 @@ CREATE TABLE IF NOT EXISTS `prallowance` (
   `Status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `prallowance`
+--
+
+INSERT INTO `prallowance` (`ID`, `EmpCode`, `AllowanceType`, `Description`, `FromDate`, `ToDate`, `Amount`, `Status`, `Remark`) VALUES
+(3, 'A03', 'Meal', 'test', '2025-05-01', '2025-05-30', 123.00, 'Active', ''),
+(4, 'A01', 'Meal', 'test', '2025-05-06', '2025-05-23', 10.00, 'Active', ''),
+(5, 'A01', 'Phone', 'test', '2025-05-01', '2025-05-31', 20.00, 'Active', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prapprovesalary`
+--
+
+DROP TABLE IF EXISTS `prapprovesalary`;
+CREATE TABLE IF NOT EXISTS `prapprovesalary` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `InMonth` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `prapprovesalary`
+--
+
+INSERT INTO `prapprovesalary` (`ID`, `InMonth`, `Remark`, `status`) VALUES
+(1, '2025-02', NULL, 'Pending'),
+(2, '2025-05', NULL, 'Pending'),
+(3, '2025-04', NULL, 'Pending');
 
 -- --------------------------------------------------------
 
@@ -515,7 +554,7 @@ CREATE TABLE IF NOT EXISTS `prbenefit` (
 
 DROP TABLE IF EXISTS `prbonus`;
 CREATE TABLE IF NOT EXISTS `prbonus` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `EmpCode` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `BonusType` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -525,7 +564,14 @@ CREATE TABLE IF NOT EXISTS `prbonus` (
   `Status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `prbonus`
+--
+
+INSERT INTO `prbonus` (`ID`, `EmpCode`, `BonusType`, `Description`, `FromDate`, `ToDate`, `Amount`, `Status`, `Remark`) VALUES
+(2, 'A01', 'dfs', 'test', '2025-05-23', '2025-05-23', 123.00, 'Active', 'test');
 
 -- --------------------------------------------------------
 
@@ -536,7 +582,7 @@ CREATE TABLE IF NOT EXISTS `prbonus` (
 DROP TABLE IF EXISTS `prdeduction`;
 CREATE TABLE IF NOT EXISTS `prdeduction` (
   `Prdeduction` datetime DEFAULT NULL,
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `EmpCode` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `DeductType` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -546,7 +592,15 @@ CREATE TABLE IF NOT EXISTS `prdeduction` (
   `Status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `Remark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `prdeduction`
+--
+
+INSERT INTO `prdeduction` (`Prdeduction`, `ID`, `EmpCode`, `DeductType`, `Description`, `FromDate`, `ToDate`, `Amount`, `Status`, `Remark`) VALUES
+(NULL, 2, 'A03', 'Late', 'test', '2025-05-10', '2025-05-10', 10.00, 'Active', ''),
+(NULL, 3, 'A01', 'Late', 'late deduction', '2025-05-14', '2025-05-14', 10.00, 'Active', '');
 
 -- --------------------------------------------------------
 
@@ -599,7 +653,7 @@ INSERT INTO `protrate` (`Code`, `Des`, `Rate`) VALUES
 DROP TABLE IF EXISTS `provertime`;
 CREATE TABLE IF NOT EXISTS `provertime` (
   `Provtime` datetime DEFAULT NULL,
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `Empcode` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `OTType` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `OTDate` date DEFAULT NULL,
@@ -608,14 +662,15 @@ CREATE TABLE IF NOT EXISTS `provertime` (
   `hour` decimal(5,2) DEFAULT NULL,
   `Reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `provertime`
 --
 
 INSERT INTO `provertime` (`Provtime`, `ID`, `Empcode`, `OTType`, `OTDate`, `FromTime`, `ToTime`, `hour`, `Reason`) VALUES
-('2025-05-04 21:27:24', 0, 'A03', 'PH', '2025-05-04', '17:00:00', '21:00:00', 4.00, 'test');
+('2025-05-11 16:20:38', 1, 'A03', 'PH', '2025-05-11', '18:00:00', '22:00:00', 4.00, 'test'),
+('2025-05-11 21:38:26', 2, 'A01', 'PH', '2025-05-14', '07:00:00', '17:00:00', 10.00, 'PH OT ');
 
 -- --------------------------------------------------------
 
@@ -652,15 +707,37 @@ CREATE TABLE IF NOT EXISTS `prpaypolicy` (
   `thu` tinyint DEFAULT '0',
   `thuHours` int DEFAULT '8',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `prpaypolicy`
 --
 
 INSERT INTO `prpaypolicy` (`id`, `code`, `description`, `workday`, `hourperday`, `hourperweek`, `fromdate`, `todate`, `mon`, `monhours`, `tues`, `tueshours`, `wed`, `wedhours`, `thur`, `thurhours`, `fri`, `frihours`, `sat`, `sathours`, `sun`, `sunhours`, `tue`, `tueHours`, `thu`, `thuHours`) VALUES
-(3, 'AA', 'sdf', 7, 11, 48, '2025-04-17', '2025-04-17', 1, 8, 1, 1, 1, 8, 1, 1, 1, 8, 1, 8, 1, 8, 1, 8, 1, 8),
-(8, 'WK', 'Worker parameter ', 6, 8, NULL, '2025-04-25', '2025-04-25', 1, 8, 1, 8, 1, 8, 1, 8, 0, 8, 0, 8, 0, 8, 1, 8, 0, 9);
+(10, 'Staff', 'Staff ', 26, 9, NULL, '2025-05-11', '2025-05-11', 1, 8, 1, 1, 1, 8, 1, 1, 1, 8, 1, 8, 0, 8, 1, 8, 1, 8);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pr_benefit_setting`
+--
+
+DROP TABLE IF EXISTS `pr_benefit_setting`;
+CREATE TABLE IF NOT EXISTS `pr_benefit_setting` (
+  `Code` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Description` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Type` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`Code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pr_benefit_setting`
+--
+
+INSERT INTO `pr_benefit_setting` (`Code`, `Description`, `Status`, `Type`) VALUES
+('Meal', 'Meal Allowance', 'A', 'Allowance'),
+('Ann', 'Annaul Bonus', 'A', 'Bonus');
 
 -- --------------------------------------------------------
 

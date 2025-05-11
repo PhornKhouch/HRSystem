@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sunHours = $sun ? floatval($_POST['sunHours']) : 0;
 
         // Calculate total work days
-        $workDay = $mon + $tue + $wed + $thu + $fri + $sat + $sun;
+        //$workDay = $mon + $tue + $wed + $thu + $fri + $sat + $sun;
 
         // Insert new record with lowercase column names
         $sql = "INSERT INTO prpaypolicy (code, description, workday, hourperday, hourperweek, fromdate, todate, 
