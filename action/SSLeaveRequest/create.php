@@ -66,7 +66,7 @@ $stmt = $con->prepare($sql);
 $stmt->bind_param("sssssd", $empCode, $leaveType, $fromDate, $toDate, $reason, $leaveDay);
 
 //get employee name
-$sql = " SELECT EmpName FROM HRstaffprofile WHERE EmpCode = ?";
+$sql = "SELECT EmpName,Telegram FROM HRstaffprofile WHERE EmpCode = ?";
 $empNameStmt = $con->prepare($sql);
 $empNameStmt->bind_param("s", $empCode);
 $empNameStmt->execute();
@@ -81,10 +81,16 @@ if ($empNameResult->num_rows > 0) {
 
 
 //send telegram message
-$botToken = "8083716719:AAEwZMyRVg0j2Zf4TXZelPN3TWbRAK2QAvQ";
-$groupID = "-1002586996680";
-$message = GetMessageForLeave($empName,$leaveType,$fromDate, $toDate,"Pending");
-sendTelegramMessage($message,$botToken,$groupID);
+$telegram = $row['Telegram'];
+$selctToken= "Select * from sytelegram_config Where chat_id='$telegram'";
+$result= $con->query($selctToken);
+$botToken  = $result['bot_token'];
+$groupID =$telegram;
+if(!empty($result)){
+    $message = GetMessageForLeave($empName,$leaveType,$fromDate, $toDate,"Pending");
+    sendTelegramMessage($message,$botToken,$groupID);
+}
+
 
 if ($stmt->execute()) {
     header("Location: ../../view/SSLeaveRequest/index.php?success=" . urlencode("Leave request created successfully"));

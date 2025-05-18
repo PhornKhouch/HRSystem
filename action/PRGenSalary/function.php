@@ -129,4 +129,35 @@
             'net_salary' => $netSalary
         ];
     }   
+
+
+    function CalculateTax($grossSalary,$empcode, $month, $connection) {
+        //select from family
+        $SQL= "Select * from hrfamily Where empcode = '$empcode' and IsTax=1";
+        $result = mysqli_query($connection, $SQL);
+        $row = mysqli_fetch_assoc($result);
+        
+        if(!empty($row)){
+            $family = $row['IsTax'];
+            if($family == 1){
+                $taxExpected = 15000000;
+                $grossSalary= $grossSalary - $taxExpected;
+            }
+        }
+        // Get tax rate for the gross salary amount
+        $select = "SELECT * FROM prtaxrate WHERE ? BETWEEN AmountFrom AND AmountTo AND status = 1";
+        $stmt = mysqli_prepare($connection, $select);
+        mysqli_stmt_bind_param($stmt, "d", $grossSalary);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        
+        // Get tax rate from row, default to 0 if no matching tax bracket found
+        $taxRate = !empty($row) ? $row['rate'] : 0;
+        
+        // Calculate total tax
+        $totalTax = ($taxRate * $grossSalary) / 100;
+        mysqli_stmt_close($stmt);
+        return $totalTax;
+    }
 ?>

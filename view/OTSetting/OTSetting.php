@@ -10,7 +10,6 @@ include("../../Config/conect.php");
                 <th>Description</th>
                 <th>Rate</th>
             </tr>
-            
         </thead>
         <tbody id="data">
             <?php
@@ -41,8 +40,7 @@ include("../../Config/conect.php");
             ?>
         </tbody>
     </table>
-     
-    
+
 <!-- Add Modal -->
 <div class="modal fade" id="addOTSettingModal" tabindex="-1" aria-labelledby="addOTSettingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -109,39 +107,6 @@ include("../../Config/conect.php");
 </div>
 
 <!-- Edit Modal -->
-<div class="modal fade" id="editOTSettingModal" tabindex="-1" aria-labelledby="editOTSettingModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editOTSettingModalLabel">Edit OT Setting</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editOTSettingForm">
-                    <input type="hidden" id="edit_ot_code">
-                    <div class="mb-3">
-                        <label for="edit_description" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="edit_description" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_rate" class="form-label">Rate</label>
-                        <input type="number" class="form-control" id="edit_rate" step="0.1" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="updateOTSetting">Update</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- DataTables CSS -->
-<link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
 <!-- DataTables JS -->
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
@@ -416,127 +381,4 @@ include("../../Config/conect.php");
         opacity: 1;
     }
 }
-
-/* Modern Form Styles */
-.modal-content {
-    border-radius: 15px;
-}
-
-.modal-header {
-    padding: 1.5rem 1.75rem;
-}
-
-.modal-header .modal-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-}
-
-.form-label {
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
-    color: #444;
-}
-
-.input-group {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-    border-radius: 8px;
-}
-
-.input-group-text {
-    border-radius: 8px 0 0 8px;
-    border: 1px solid #dee2e6;
-    padding: 0.6rem 1rem;
-}
-
-.form-control {
-    border-radius: 0 8px 8px 0;
-    padding: 0.6rem 1rem;
-    border: 1px solid #dee2e6;
-    font-size: 0.95rem;
-}
-
-.form-control:focus {
-    box-shadow: none;
-    border-color: #86b7fe;
-}
-
-.input-group:focus-within {
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-.input-group:focus-within .input-group-text,
-.input-group:focus-within .form-control {
-    border-color: #86b7fe;
-}
-
-.btn {
-    padding: 0.6rem 1.5rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.btn-primary {
-    background-color: #0d6efd;
-    border: none;
-}
-
-.btn-primary:hover {
-    background-color: #0b5ed7;
-    transform: translateY(-1px);
-}
-
-.btn-light {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-}
-
-.btn-light:hover {
-    background-color: #e9ecef;
-    border-color: #dee2e6;
-}
-
-.invalid-feedback {
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-}
-
-/* Animation for modal */
-.modal.fade .modal-dialog {
-    transition: transform 0.3s ease-out;
-}
-
-.modal.fade .modal-content {
-    transform: scale(0.95);
-    transition: transform 0.3s ease-out;
-}
-
-.modal.show .modal-content {
-    transform: scale(1);
-}
 </style>
-
-<script>
-// Add this to your existing JavaScript
-$(document).ready(function() {
-    // ...existing code...
-
-    // Form validation
-    const forms = document.querySelectorAll('.needs-validation');
-    Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        }, false);
-    });
-
-    // Input animation
-    $('.form-control').on('focus', function() {
-        $(this).closest('.input-group').addClass('focused');
-    }).on('blur', function() {
-        $(this).closest('.input-group').removeClass('focused');
-    });
-});
-</script>

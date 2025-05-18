@@ -1,0 +1,221 @@
+body {
+            background-color: #f8f9fa;
+        }
+        .dashboard-header {
+            padding: 1rem;
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .dashboard-header h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin: 0;
+        }
+        .dashboard-header i {
+            padding: 8px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .row.g-3 {
+            margin-bottom: 1.5rem;
+        }
+        .metric-card {
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .metric-card.head-count {
+            background: #1976d2;
+            border: 1px solid #1565c0;
+            color: white;
+        }
+        .metric-card.age {
+            background: #2e7d32;
+            border: 1px solid #1b5e20;
+            color: white;
+        }
+        .metric-card.gender {
+            background: #7b1fa2;
+            border: 1px solid #6a1b9a;
+            color: white;
+        }
+        .metric-card.hr-ratio {
+            background: #c2185b;
+            border: 1px solid #b71c1c;
+            color: white;
+        }
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.8), transparent);
+            opacity: 0;
+            transition: all 0.5s ease;
+            transform: translateX(-100%);
+        }
+        .metric-card:hover::before {
+            opacity: 1;
+            transform: translateX(100%);
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .metric-card:hover::before {
+            opacity: 1;
+        }
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            position: relative;
+            transition: all 0.3s ease;
+            transform: rotate(-5deg);
+        }
+        .metric-card:hover .metric-icon {
+            transform: rotate(0deg);
+        }
+        .metric-icon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .metric-card:hover .metric-icon::after {
+            opacity: 1;
+        }
+        .metric-icon i {
+            font-size: 1.75rem;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+        .metric-card:hover .metric-icon i {
+            transform: scale(1.1);
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+            line-height: 1.2;
+            transition: all 0.3s ease;
+        }
+        .metric-card:hover .metric-value {
+            transform: scale(1.05);
+        }
+        .metric-label {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .chart-container {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .chart-container:hover {
+            transform: translateY(-5px);
+        }
+        .chart-container h5 {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .chart-container h5 i {
+            padding: 8px;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+        .department-chart {
+            background: linear-gradient(145deg, #e3f2fd 0%, #ffffff 100%);
+        }
+        .salary-chart {
+            background: linear-gradient(145deg, #e8f5e9 0%, #ffffff 100%);
+        }
+        .employee-table {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .employee-table h5 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .employee-table th {
+            background: #2e7d32;
+            border-bottom: 2px solid #1b5e20;
+            font-weight: 600;
+            color: white;
+            padding: 1rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .employee-table td {
+            vertical-align: middle;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        .employee-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .table-hover tbody tr {
+            transition: all 0.2s;
+        }
+        .badge {
+            padding: 0.5rem 0.75rem;
+            font-weight: 500;
+        }
+        .bg-light {
+            background-color: #f1f3f5 !important;
+        }
+        .bg-primary-soft { 
+            background: rgba(255,255,255,0.2);
+        }
+        .bg-success-soft { 
+            background: rgba(255,255,255,0.2);
+        }
+        .bg-purple-soft { 
+            background: rgba(255,255,255,0.2);
+        }
+        .bg-danger-soft { 
+            background: rgba(255,255,255,0.2);
+        }

@@ -10,7 +10,7 @@
         <frame src="navbar.php" name="">
         <frameset cols="17%,*">
             <frame src="root/Sidemenu.php" name="menu">
-            <frame src="root/Content.php" name="content">
+            <frame src="view/Dashboard/index.php" name="content">
         </frameset>
     </frameset>
 </html>

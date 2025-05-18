@@ -451,7 +451,7 @@ $(document).ready(function() {
                     { name: 'OT', desc: 'Overtime', amount: response.details.OT},
                     { name: 'Bonus', desc: 'Performance bonus', amount: response.details.Bonus },
                     { name: 'Deductions', desc: 'Total deductions', amount: response.details.Deduction },
-                    { name: 'Tax', desc: 'Income tax', amount: response.details.LeavedTax },
+                    { name: 'Tax', desc: 'Income tax', amount: response.details.Amtobetax },
                     { name: 'NSSF', desc: 'Social security contribution', amount: response.details.NSSF }
                 ];
 

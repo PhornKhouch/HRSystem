@@ -30,7 +30,7 @@
             if ($_SESSION['user']['role'] == 'admin') {
             ?>
                 <li>
-                    <a href="../Dasborad/IndexDasbord.php" target="content">
+                    <a href="../view/Dashboard/index.php" target="content">
                         <i class="fa fa-home"></i>Dasborad
                     </a>
                 </li>
@@ -48,13 +48,16 @@
                             <a href="../view/PayrollSetting/index.php" target="content">Payroll</a>
                         </li>
                         <li>
-                            <a href="../view/OTSetting/index.php" target="content">Tax Setting</a>
+                            <a href="../view/TaxSetting/index.php" target="content">Tax Setting</a>
                         </li>
                         <li>
                             <a href="../view/LeavePolicy/index.php" target="content">Leave Policy</a>
                         </li>
                         <li>
                             <a href="../view/Menu/index.php" target="content">General Settings</a>
+                        </li>
+                        <li>
+                            <a href="../view/User/index.php" target="content">User Settings</a>
                         </li>
                         <li>
                             <a href="../view/Telegramconfig/index.php" target="content">Telegram config</a>
@@ -138,7 +141,7 @@
                             <a href="../view/PRPayDetail/paydetail.php" target="content">Pay Detail</a>
                         </li>
                         <li>
-                            <a href="../AddNormalUser/index.php" target="content">Salary Approval</a>
+                            <a href="../view/PRApproveSalary/index.php" target="content">Salary Approval</a>
                         </li>
                     </ul>
                 </li>
@@ -165,10 +168,16 @@
                     </a>
                     <ul class="collapse list-unstyled" id="Report">
                         <li>
-                            <a href="Customer/index.php" target="content">Sale Product</a>
+                            <a href="../view/Report/EmployeeInOut/index.php" target="content">Employee InOut</a>
                         </li>
                         <li>
-                            <a href="Customer/index.php" target="content">Stock Product</a>
+                            <a href="../view/Report/EmployeeFamily/index.php" target="content">Employee's Family</a>
+                        </li>
+                         <li>
+                            <a href="../view/Report/EmployeeFamily/index.php" target="content">Monthly Salary Report</a>
+                        </li>
+                          <li>
+                            <a href="../view/Report/EmployeeFamily/index.php" target="content">PaySlip</a>
                         </li>
                     </ul>
                 </li>

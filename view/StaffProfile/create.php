@@ -239,14 +239,14 @@ if (!isset($_SESSION['csrf_token'])) {
                                  <select name="telegram" id="telegram" class="form-select">
                                      <option value="">Select Telegram</option>
                                     <?php
-                                    $stmt = $con->prepare("SELECT Chat_id, id FROM sytelegram_config");
+                                    $stmt = $con->prepare("SELECT chat_id, chat_name FROM sytelegram_config");
                                     if ($stmt) {
                                         $stmt->execute();
                                         $result = $stmt->get_result();
                                         while($row = $result->fetch_assoc()) 
                                         {
                                             ?>
-                                                 <option value="<?php echo $row['id']; ?>"><?php echo $row['Chat_id']; ?></option>
+                                                 <option value="<?php echo $row['chat_id']; ?>"><?php echo $row['chat_name']; ?></option>
                                             <?php
                                         }
                                     }

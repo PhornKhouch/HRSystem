@@ -17,6 +17,19 @@ try {
     }    // Start transaction
     mysqli_begin_transaction($con);
 
+
+    // if salary is approve cannot generate again 
+    $Approvesalary = "Select * from prapprovesalary where InMonth = '$month'";
+    $res= $con->query($Approvesalary);
+    $rowData= $res->fetch_assoc();
+   if(!empty($rowData)){
+     $StatusApprove = $rowData['status'];
+     if($StatusApprove=="Approved"){
+        throw new Exception("Salary is lock Can not regenerate");
+     }
+   }
+
+
     $processedEmployees = [];
     $errors = [];
 
@@ -87,8 +100,14 @@ try {
                 $amtobetax = 0; // This should be calculated based on your tax rules
                 $family = 0; // This should be based on employee's family allowance
                 $untaxAm = 0; // Untaxed amount
-                $nssf = 0; // National Social Security Fund contribution
-
+                $nssf = 5.98; // National Social Security Fund contribution
+                //Tax calculation
+                $AmountCaleTax =$grossSalary*4000;
+                $TaxAmountKH = CalculateTax($AmountCaleTax, $empCode, $month, $con);
+                $TaxUSD=$TaxAmountKH/4000;
+                $amtobetax= $TaxUSD;
+                $untaxAm=$grossSalary-$amtobetax;
+                $netSalary=$untaxAm-$nssf;
                 // Extract year and month
                 $inYear = intval(date('Y', strtotime($month)));
                 $inMonth = date('Y-m', strtotime($month));
@@ -132,10 +151,10 @@ try {
                 } else {                    // Insert new record
                     $insert_sql = "INSERT INTO hisgensalary (
                                   EmpCode, InMonth, Inyear, Salary, 
-                                  Allowance,OT, Bonus, Dedction, LeavedTax,
+                                  Allowance, OT, Bonus, Dedction, LeavedTax,
                                   Amtobetax, Grosspay, Family, UntaxAm,
                                   NSSF, NetSalary) 
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
                     $stmt = mysqli_prepare($con, $insert_sql);
                     mysqli_stmt_bind_param(

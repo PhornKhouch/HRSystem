@@ -9,8 +9,8 @@ include("../../Config/conect.php");
                 <th>Chat Name</th>
                 <th>Chat ID</th>
                 <th>Bot Token</th>
-                <th>description</th>
-                <th>status</th>
+                <th>Description</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody id="data">
@@ -24,25 +24,25 @@ include("../../Config/conect.php");
                         <td>
                             <button class="btn btn-primary btn-sm edit-telegram-btn" 
                                     data-id="<?php echo $row['id']; ?>"
-                                    data-chat-name="<?php echo $row['chat_name']; ?>"
-                                    data-chat-id="<?php echo $row['chat_id']; ?>"
-                                    data-bot-token="<?php echo $row['bot_token']; ?>"
-                                    data-description="<?php echo $row['description']; ?>"
-                                    data-status="<?php echo $row['status']; ?>">
+                                    data-chat-name="<?php echo $row['Chat_name']; ?>"
+                                    data-chat-id="<?php echo $row['Chat_id']; ?>"
+                                    data-bot-token="<?php echo $row['Bot_token']; ?>"
+                                    data-description="<?php echo $row['Description']; ?>"
+                                    data-status="<?php echo $row['Status']; ?>">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
                             <button class="btn btn-danger btn-sm delete-telegram-btn" data-id="<?php echo $row['id']; ?>">
                                 <i class="fas fa-trash"></i> Delete
                             </button>
                         </td>
-                        <td><?php echo $row['chat_name']; ?></td>
-                        <td><?php echo $row['chat_id']; ?></td>
-                        <td><?php echo substr($row['bot_token'], 0, 10) . '...'; ?></td>
-                        <td><?php echo $row['description']; ?></td>
+                        <td><?php echo $row['Chat_name']; ?></td>
+                        <td><?php echo $row['Chat_id']; ?></td>
+                        <td><?php echo substr($row['Bot_token'], 0, 10) . '...'; ?></td>
+                        <td><?php echo $row['Description']; ?></td>
                         <td>
                             <center>
                                 <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input" <?php echo $row['status'] == 1 ? 'checked' : ''; ?> disabled>
+                                    <input type="checkbox" class="form-check-input" <?php echo $row['Status'] == 1 ? 'checked' : ''; ?> disabled>
                                 </div>
                             </center>
                         </td>
@@ -77,7 +77,7 @@ include("../../Config/conect.php");
                         <input type="text" class="form-control" id="bot_token" required>
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label">description</label>
+                        <label for="description" class="form-label">Description</label>
                         <textarea class="form-control" id="description" rows="3"></textarea>
                     </div>
                     <div class="mb-3 form-switch-custom">
@@ -120,7 +120,7 @@ include("../../Config/conect.php");
                         <input type="text" class="form-control" id="edit_bot_token" required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_description" class="form-label">description</label>
+                        <label for="edit_description" class="form-label">Description</label>
                         <textarea class="form-control" id="edit_description" rows="3"></textarea>
                     </div>
                     <div class="mb-3 form-switch-custom">
@@ -153,20 +153,13 @@ include("../../Config/conect.php");
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function() {
-        // Initialize DataTable with column definitions
+        // Initialize DataTable only if not already initialized
+        let telegramTable;
         if (!$.fn.DataTable.isDataTable('#TelegramConfigTable')) {
             telegramTable = $('#TelegramConfigTable').DataTable({
                 responsive: true,
                 lengthChange: true,
-                autoWidth: false,
-                columns: [
-                    { data: 'actions', orderable: false },
-                    { data: 'chat_name' },
-                    { data: 'chat_id' },
-                    { data: 'bot_token' },
-                    { data: 'description' },
-                    { data: 'status', orderable: false }
-                ]
+                autoWidth: false
             });
         } else {
             telegramTable = $('#TelegramConfigTable').DataTable();
@@ -193,8 +186,9 @@ include("../../Config/conect.php");
                     status: status
                 },
                 success: function(response) {
-                    const rowData = {
-                        actions: `<button class="btn btn-primary btn-sm edit-telegram-btn" 
+                    // Add new row to DataTable
+                    telegramTable.row.add([
+                        `<button class="btn btn-primary btn-sm edit-telegram-btn" 
                             data-id="${response.id}"
                             data-chat-name="${$('#chat_name').val()}"
                             data-chat-id="${$('#chat_id').val()}"
@@ -206,19 +200,16 @@ include("../../Config/conect.php");
                          <button class="btn btn-danger btn-sm delete-telegram-btn" data-id="${response.id}">
                             <i class="fas fa-trash"></i> Delete
                          </button>`,
-                        chat_name: $('#chat_name').val(),
-                        chat_id: $('#chat_id').val(),
-                        bot_token: $('#bot_token').val().substring(0, 10) + '...',
-                        description: $('#description').val(),
-                        status: `<center>
+                        $('#chat_name').val(),
+                        $('#chat_id').val(),
+                        $('#bot_token').val().substring(0, 10) + '...',
+                        $('#description').val(),
+                        `<center>
                             <div class="form-check form-switch">
                                 <input type="checkbox" class="form-check-input" ${status ? 'checked' : ''} disabled>
                             </div>
                         </center>`
-                    };
-
-                    // Add new row to DataTable
-                    telegramTable.row.add(rowData).draw(false);
+                    ]).draw(false);
 
                     // Hide modal and clean up
                     $('#addTelegramConfigModal').modal('hide');
@@ -290,8 +281,9 @@ include("../../Config/conect.php");
                     const rowIndex = telegramTable.row($(`tr[data-id="${id}"]`)).index();
                     
                     if (rowIndex !== undefined) {
-                        const rowData = {
-                            actions: `<button class="btn btn-primary btn-sm edit-telegram-btn" 
+                        // Update the row data
+                        telegramTable.row(rowIndex).data([
+                            `<button class="btn btn-primary btn-sm edit-telegram-btn" 
                                 data-id="${id}"
                                 data-chat-name="${chatName}"
                                 data-chat-id="${chatId}"
@@ -303,19 +295,16 @@ include("../../Config/conect.php");
                              <button class="btn btn-danger btn-sm delete-telegram-btn" data-id="${id}">
                                 <i class="fas fa-trash"></i> Delete
                              </button>`,
-                            chat_name: chatName,
-                            chat_id: chatId,
-                            bot_token: botToken.substring(0, 10) + '...',
-                            description: description,
-                            status: `<center>
+                            chatName,
+                            chatId,
+                            botToken.substring(0, 10) + '...',
+                            description,
+                            `<center>
                                 <div class="form-check form-switch">
                                     <input type="checkbox" class="form-check-input" ${status ? 'checked' : ''} disabled>
                                 </div>
                             </center>`
-                        };
-
-                        // Update the row data
-                        telegramTable.row(rowIndex).data(rowData).draw(false);
+                        ]).draw(false);
 
                         // Hide modal and clean up
                         $('#editTelegramConfigModal').modal('hide');
