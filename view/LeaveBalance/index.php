@@ -9,7 +9,6 @@
 <!-- Add SweetAlert2 -->
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
 <link href="../../Style/leave.css" rel="stylesheet">
-
 <div class="container-fluid mt-3">
     <div class="card">
         <div class="card-header">

@@ -1,7 +1,13 @@
 <?php
+// Disable error reporting to prevent HTML errors in JSON output
+error_reporting(0);
+ini_set('display_errors', 0);
+
+// Set JSON content type
 header('Content-Type: application/json');
 
-include("../../../Config/conect.php");
+// Include database connection
+include("../../Config/conect.php");
 
 if (!$con) {
     echo json_encode(array(
@@ -73,15 +79,14 @@ if (!empty($search)) {
 }
 
 // Get filtered records count
-$filteredQuery = "SELECT COUNT(*) as total FROM (" . $query . ") as filtered";
 try {
-    $filteredResult = mysqli_query($con, $filteredQuery);
+    $filteredResult = mysqli_query($con, $query);
     if (!$filteredResult) {
-        throw new Exception("Failed to count filtered records: " . mysqli_error($con));
+        throw new Exception(mysqli_error($con));
     }
-    $filteredRecords = mysqli_fetch_assoc($filteredResult)['total'];
-    mysqli_free_result($filteredResult);
+    $filteredRecords = mysqli_num_rows($filteredResult);
 } catch (Exception $e) {
+    http_response_code(500);
     echo json_encode(array(
         "draw" => $draw,
         "recordsTotal" => 0,
@@ -94,22 +99,47 @@ try {
 
 // Add pagination
 $query .= " LIMIT $start, $length";
-session_start();
-// Execute query
+
+// Execute final query with pagination
 try {
     $result = mysqli_query($con, $query);
-    $_SESSION['data']=$result;
-    echo $result;
-    //header("Location: ../../../View/Report/EmployeeFamily/index.php");
+    if (!$result) {
+        throw new Exception(mysqli_error($con));
+    }
+    
+    $data = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = array(
+            "EmpCode" => $row['EmpCode'],
+            "EmpName" => $row['EmpName'],
+            "FamilyMemberName" => $row['FamilyMemberName'],
+            "RelationType" => $row['RelationType'],
+            "Gender" => $row['Gender'],
+            "IsTax" => $row['IsTax'] == '1' ? 'Yes' : 'No',
+            "Actions" => '<button class="btn btn-sm btn-info view-details" data-empcode="' . $row['EmpCode'] . '"><i class="fas fa-eye"></i></button>'
+        );
+    }
+
+    echo json_encode(array(
+        "draw" => $draw,
+        "recordsTotal" => $totalRecords,
+        "recordsFiltered" => $filteredRecords,
+        "data" => $data
+    ));
+
+    mysqli_free_result($result);
 } catch (Exception $e) {
+    http_response_code(500);
     echo json_encode(array(
         "draw" => $draw,
         "recordsTotal" => 0,
         "recordsFiltered" => 0,
         "data" => array(),
-        "error" => "Exception occurred: " . $e->getMessage()
+        "error" => $e->getMessage()
     ));
 }
 
-// End script
+if ($con) {
+    mysqli_close($con);
+}
 exit;

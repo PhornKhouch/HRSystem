@@ -269,25 +269,25 @@ include("../../../Config/conect.php");
     <div class="card">
         <div class="card-header">
             <h5 class="card-header-title">
-                <i class="fas fa-users"></i>
-                Employee Family Report
+                <i class="fas fa-chart-bar"></i>
+                Monthly Summary Report
             </h5>
         </div>
         <div class="card-body">
-            <!-- Employee Family Report Section -->
+            <!-- Monthly Pay Report Section -->
             <div class="detail-card mt-4">
                 <div class="detail-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0">Employee Family Details</h6>
+                    <h6 class="mb-0">Department Summary Report</h6>
                 </div>
                 <div class="detail-body">
                     <div class="row g-3 mb-3">
                         <div class="col-md-3">
-                            <label for="employeeCode" class="form-label">Employee Code:</label>
-                            <input type="text" id="employeeCode" class="form-control" placeholder="Enter employee code">
+                            <label for="payMonth" class="form-label">Month:</label>
+                            <input type="month" id="payMonth" class="form-control" value="<?php echo date('Y-m'); ?>">
                         </div>
                         <div class="col-md-3">
-                            <label for="department" class="form-label">Department:</label>
-                            <select id="department" class="form-select">
+                            <label for="payDepartment" class="form-label">Department:</label>
+                            <select id="payDepartment" class="form-select">
                                 <option value="all">All Departments</option>
                                 <?php
                                 $sql = "SELECT Code, Description FROM hrdepartment WHERE Status = 'Active' ORDER BY Description";
@@ -300,42 +300,46 @@ include("../../../Config/conect.php");
                                 ?>
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <label for="relationshipType" class="form-label">Relationship:</label>
-                            <select id="relationshipType" class="form-select">
-                                <option value="all">All Types</option>
-                                <option value="Spouse">Spouse</option>
-                                <option value="Child">Child</option>
-                                <option value="Parent">Parent</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="taxStatus" class="form-label">Tax Status:</label>
-                            <select id="taxStatus" class="form-select">
-                                <option value="all">All Status</option>
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
-                            </select>
-                        </div>
-                        <div class="col-12 d-flex justify-content-end">
-                            <button type="button" id="viewFamilyReport" class="btn btn-primary"><i class="fas fa-search me-2"></i>View Family Report</button>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="button" id="viewPayReport" class="btn btn-primary"><i class="fas fa-search me-2"></i>View Monthly Pay</button>
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table id="familyTable" class="table table-bordered table-hover" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Employee Code</th>
-                                    <th>Employee Name</th>
-                                    <th>Family Member</th>
-                                    <th>Relationship</th>
-                                    <th>Gender</th>
-                                    <th>Tax Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
+                        <table id="monthlySummaryTable" class="table table-bordered table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Department</th>
+                                <th>Employee Count</th>
+                                <th>Total Salary</th>
+                                <th>Total Allowance</th>
+                                <th>Total OT</th>
+                                <th>Total Bonus</th>
+                                <th>Total Deduction</th>
+                                <th>Total Leaved Tax</th>
+                                <th>Total Amt to be Tax</th>
+                                <th>Total Gross Pay</th>
+                                <th>Total Family</th>
+                                <th>Total Untaxed</th>
+                                <th>Total NSSF</th>
+                                <th>Total Net Salary</th>
+                                <th>Average Salary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="4" style="text-align:right">Total:</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
                         </table>
                     </div>
                 </div>
@@ -364,20 +368,23 @@ include("../../../Config/conect.php");
 
 <script>
 $(document).ready(function() {
-    let familyTable;
+    let summaryTable;
 
-    // Format date
-    function formatDate(date) {
-        return date ? moment(date).format('DD-MM-YYYY') : '';
+    // Format number with commas and 2 decimal places
+    function formatNumber(number) {
+        return number ? parseFloat(number).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) : '0.00';
     }
 
     // Initialize DataTable
     function initializeDataTable() {
-        if (familyTable) {
-            familyTable.destroy();
+        if (summaryTable) {
+            summaryTable.destroy();
         }
 
-        familyTable = $('#familyTable').DataTable({
+        summaryTable = $('#monthlySummaryTable').DataTable({
             scrollX: true,
             scrollY: '50vh',
             scrollCollapse: true,
@@ -391,26 +398,27 @@ $(document).ready(function() {
             pageLength: 25,
             order: [[0, 'asc']],
             ajax: {
-                url: '../../../action/Report/fetch_employee_family.php',
+                url: '../../../action/Report/fetch_monthly_summary.php',
                 type: 'POST',
                 data: function(d) {
-                    return {
-                        ...d,
-                        employeeCode: $('#employeeCode').val(),
-                        department: $('#department').val(),
-                        relationshipType: $('#relationshipType').val(),
-                        taxStatus: $('#taxStatus').val()
-                    };
+                    d.inmonth = $('#payMonth').val();
+                    d.department = $('#payDepartment').val();
                 },
                 error: function(xhr, error, thrown) {
                     let errorMessage = 'Error loading data';
-                    try {
-                        const response = JSON.parse(xhr.responseText);
-                        if (response.message) {
-                            errorMessage = response.message;
+                    
+                    if (xhr.responseText) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.message) {
+                                errorMessage = response.message;
+                            }
+                        } catch (e) {
+                            console.error('Server response:', xhr.responseText);
+                            errorMessage = 'Invalid server response. Please check the server logs.';
                         }
-                    } catch (e) {
-                        console.error('Error parsing error response:', e);
+                    } else {
+                        errorMessage = 'No response from server';
                     }
                     
                     Swal.fire({
@@ -421,23 +429,75 @@ $(document).ready(function() {
                 }
             },
             columns: [
-                { data: 'EmpCode', title: 'Employee Code' },
-                { data: 'EmpName', title: 'Employee Name' },
-                { data: 'FamilyMemberName', title: 'Family Member' },
-                { data: 'RelationType', title: 'Relationship' },
-                { data: 'Gender', title: 'Gender' },
+                { data: 'DepartmentName' },
                 { 
-                    data: 'IsTax', 
-                    title: 'Tax Status',
-                    render: function(data) {
-                        return `<span class="${data === 'Yes' ? 'status-active' : 'status-pending'}">${data}</span>`;
-                    }
+                    data: 'EmployeeCount',
+                    className: 'text-end'
                 },
                 { 
-                    data: 'Actions',
-                    title: 'Actions',
-                    orderable: false,
-                    className: 'text-center'
+                    data: 'TotalSalary',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalAllowance',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalOT',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalBonus',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalDeduction',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalLeavedTax',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalAmtobetax',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalGrossPay',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalFamily',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalUntaxedAmount',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalNSSF',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'TotalNetSalary',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
+                },
+                { 
+                    data: 'AverageSalary',
+                    className: 'text-end',
+                    render: function(data) { return formatNumber(data); }
                 }
             ],
             dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
@@ -449,36 +509,41 @@ $(document).ready(function() {
                     text: '<i class="fas fa-file-excel me-2"></i>Export to Excel',
                     className: 'btn btn-success btn-sm',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
+                        columns: ':visible'
                     },
                     footer: true,
                     filename: function() {
-                        return 'Employee_Family_Report_' + moment().format('YYYY-MM-DD');
+                        return 'Monthly_Summary_Report_' + $('#payMonth').val();
                     },
                     title: function() {
-                        let title = 'Employee Family Report';
-                        if ($('#department').val() !== 'all') {
-                            title += ' - ' + $('#department option:selected').text();
-                        }
-                        if ($('#relationshipType').val() !== 'all') {
-                            title += ' - ' + $('#relationshipType').val();
-                        }
-                        return title;
+                        return 'Monthly Summary Report - ' + $('#payMonth').val() + 
+                               ($('#payDepartment').val() !== 'all' ? 
+                               ' - ' + $('#payDepartment option:selected').text() : '');
                     }
                 }
             ],
             footerCallback: function(row, data, start, end, display) {
                 var api = this.api();
-                // Update total records in footer
-                var totalRecords = api.page.info().recordsTotal;
-                $(api.table().footer()).find('th').html('Total Records: ' + totalRecords);
+
+                // Calculate column totals for numeric columns
+                [1,2,3,4,5,6,7,8,9,10,11,12,13,14].forEach(function(index) {
+                    var total = api
+                        .column(index)
+                        .data()
+                        .reduce(function(a, b) {
+                            return parseFloat(a) + parseFloat(b);
+                        }, 0);
+
+                    // Update footer
+                    $(api.column(index).footer()).html(formatNumber(total));
+                });
             },
             drawCallback: function(settings) {
                 if (settings.json && settings.json.data && settings.json.data.length === 0) {
                     Swal.fire({
                         icon: 'info',
                         title: 'No Data Found',
-                        text: 'No family records found for the selected filters.'
+                        text: 'No salary records found for the selected month and department.'
                     });
                 }
             }
@@ -486,19 +551,8 @@ $(document).ready(function() {
     }
 
     // Handle view report button click
-    $('#viewFamilyReport').on('click', function() {
+    $('#viewPayReport').on('click', function() {
         initializeDataTable();
-    });
-
-    // Handle view details button click
-    $('#familyTable').on('click', '.view-details', function() {
-        const empCode = $(this).data('id');
-        // Add your view details logic here
-        Swal.fire({
-            title: 'Family Details',
-            text: 'Viewing family details for employee: ' + empCode,
-            icon: 'info'
-        });
     });
 });
 </script>

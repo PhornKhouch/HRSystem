@@ -2,6 +2,10 @@
 include("root/header.php");
 ?>
 <style>
+    body{
+        padding: 0;
+        margin: 0;
+    }
     .navbar-custom {
         background-color: rgb(42, 39, 57);
         padding: 0.8rem 2rem;
